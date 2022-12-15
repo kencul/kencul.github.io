@@ -57,3 +57,9 @@ Checking back at the home page, I won't have time to implement the music transpo
 The picture in the about page doesn't seem to be getting the gradient like the one on the home page.
 
 But, I think it would be most impactful and cool to get my Unity game working in WebGL than any other feature atm, so I am going to work on that, which will require pushing to the github and checking the website there, which will severely reduce my efficiency
+
+My imports from google fonts dont work on the github pages, which makes the entire website unusable
+
+Fixed by removing https: from the url, as github pages doesn't like that
+This breaks my local version, so I can't preview changes without pushing now
+
