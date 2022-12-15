@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 
+        viewport: set the width of the website to the width of the window and set to zoom to 100% 
+        https://www.w3schools.com/css/css_rwd_viewport.asp
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ken Kobayashi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- Classes can only be applied to as many elements as you want, id can only be used on one element on a page -->
+<body>
+    <div class="header">
+        <div class="container">
+
+            <!-- navbar -->
+            <div class="navbar">
+                <div class="logo">
+                    <a href="./index.html" class="logoName">ken</a>
+                </div>
+ 
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="./index.html">Home</a>
+                        </li>
+                        <!-- animated dropdown: https://codinhood.com/micro/10-dropdown-menu-animations-css-transform -->
+                        <!-- <li class="dropdown">Works</li> -->
+                            <!-- <ul class="dropdownMenu dropdownMenuAnimated dropdown"> -->
+                                <li class="dropdownItem1">
+                                    <a href="./music.html">Music</a>
+                                </li>
+                                <li class="dropdownItem2">
+                                    <a href="./unity.html">Unity</a>
+                                </li>
+                                <li class="dropdownItem3">
+                                    <a href="./reel.html">Reels</a>
+                                </li>
+                            <!-- </ul> -->
+                        <li>
+                            <a href="./socials.html">Follow</a>
+                        </li>
+                        <li>
+                            <a href="./about.html">About</a>
+                        </li>
+                        <li>
+                            <a href="./contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+ 
+            </div>
+            <!-- end navbar -->
+            <div class="row" style="padding-top: 2rem;">
+                <div class="col-3">
+                    <h1>ken - Forget Me</h1>
+                    <h1>ft. Hatsune Miku</h1>
+                    <h1 class="music-info">My first track,</h1>
+                    <h1 class="music-text">featuring the vocaloid singer, Hatsune Miku</h1>
+                    <iframe width="100%" src="https://www.youtube.com/embed/jtR-VZRXP48" frameborder="0" allow="clipboard-write; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="col-3">
+                    <h1>ken - Out of Love</h1>
+                    <h1>ft. Hatsune Miku</h1>
+                    <h1 class="music-info">A revisit to Miku</h1>
+                    <h1 class="music-text">Learning the depths and details of Miku</h1>
+                    <iframe width="100%" src="https://www.youtube.com/embed/XRA3QPuZ6zw" frameborder="0" allow="clipboard-write; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="col-3">
+                    <h1>ken - Taste of Candy</h1>
+                    <h1>Herbs and Love</h1>
+                    <h1>ft. Hatsune Miku</h1>
+                    <h1 class="music-info">A farewell lovesong,</h1>
+                    <h1 class="music-text">my attempt at a bittersweet ballad</h1>
+                    <iframe width="100%" src="https://www.youtube.com/embed/PO_y94pqrHY" frameborder="0" allow="clipboard-write; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="col-3">
+                    <h1>LOONA - Flip That</h1>
+                    <h1>(ken Remix)</h1>
+                    <h1 class="music-info">A house, future bass remix</h1>
+                    <h1 class="music-text">of a K-pop song that needed a lil fixin'</h1>
+                    <iframe 
+                        id="sc-widget"
+                        width="90%" 
+                        height="166" 
+                        scrolling="no" 
+                        frameborder="no" 
+                        allow="autoplay" 
+                        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1316754085&color=%23a400cc&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">    
+                    </iframe>
+                    
+                    <div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
+                        <a href="https://soundcloud.com/user-916661343-886891682" title="ken" target="_blank" style="color: #cccccc; text-decoration: none;">ken</a> · <a href="https://soundcloud.com/user-916661343-886891682/flip-that-ken-remix-loona" title="Flip That (Ken Remix) - Loona" target="_blank" style="color: #cccccc; text-decoration: none;">Flip That (Ken Remix) - Loona</a>
+                    </div>
+            </div>
+            <!-- <script>
+                var widgetIframe = document.getElementById('sc-widget'),
+                widget       = SC.Widget(widgetIframe);
+                widget.setVolume(10);
+            </script> -->
+        </div>
+    </div>
+</body>

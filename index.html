@@ -2,8 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- set the width of the website to the width of the window and set to zoom to 100% -->
+    <!-- 
+        viewport: set the width of the website to the width of the window and set to zoom to 100% 
+        https://www.w3schools.com/css/css_rwd_viewport.asp
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ken Kobayashi Music</title>
+    <title>Ken Kobayashi</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
+<!-- Classes can only be applied to as many elements as you want, id can only be used on one element on a page -->
+<body>
+    <div class="header">
+        <div class="container">
+
+            <!-- navbar -->
+
+            <div class="navbar">
+                <div class="logo">
+                    <a href="./index.html" class="logoName">ken</a>
+                </div>
+ 
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="./index.html">Home</a>
+                        </li>
+                        <!-- animated dropdown: https://codinhood.com/micro/10-dropdown-menu-animations-css-transform -->
+                        <!-- <li class="dropdown">Works</li> -->
+                            <!-- <ul class="dropdownMenu dropdownMenuAnimated dropdown"> -->
+                                <li class="dropdownItem1">
+                                    <a href="./music.html">Music</a>
+                                </li>
+                                <li class="dropdownItem2">
+                                    <a href="./unity.html">Unity</a>
+                                </li>
+                                <li class="dropdownItem3">
+                                    <a href="./reel.html">Reels</a>
+                                </li>
+                            <!-- </ul> -->
+                        <li>
+                            <a href="./socials.html">Follow</a>
+                        </li>
+                        <li>
+                            <a href="./about.html">About</a>
+                        </li>
+                        <li>
+                            <a href="./contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+ 
+            </div>
+
+            <!-- https://stackoverflow.com/questions/31954089/how-can-i-reuse-a-navigation-bar-on-multiple-pages/42333464#42333464 -->
+            <!-- <div id="nav-placeholder">
+                
+ 
+            </div>
+            <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+                <script>
+                    $.get("nav.html", function(data){
+                    $("#nav-placeholder").replaceWith(data);
+                    });
+                    console.log("success");
+                </script> -->
+            <!-- end navbar -->
+
+
+            <div class="row" style="padding-top: 2rem;">
+ 
+                <!-- left text -->
+                <div class="col-2Left">
+                    <h1>Ken Kobayashi</h1>
+                    <h1 class="text_info">Berklee Undergraduate</h1>
+                    <p class="text_para">Producer, Vocaloid Artist, Programmer<br><b>Progamer</b></p> 
+                    <a href="./music.html" class="btn">Listen to my Music! &#8594</a>            
+                </div>
+                <!-- end left text -->
+
+                <!-- right image -->
+                <div class="col-2Right">
+                    <img src="./assets/images/2.jpeg" alt="">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+ 
+    
+
+
+</body>
+</html>
