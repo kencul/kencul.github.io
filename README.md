@@ -63,3 +63,4 @@ My imports from google fonts dont work on the github pages, which makes the enti
 Fixed by removing https: from the url, as github pages doesn't like that
 This breaks my local version, so I can't preview changes without pushing now
 
+first attemp at the unity embed, the window is really short, and the unity logo shows up, but never finishes loading

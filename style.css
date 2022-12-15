@@ -283,3 +283,7 @@ h2{
 .centerImg {
     margin-right: 0;
 }
+
+.unityWindow {
+    aspect-ratio: 16 / 9;
+}
