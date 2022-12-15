@@ -1,7 +1,7 @@
 /* REF: https://ziontutorial.com/how-to-create-a-modern-website-using-html-and-css-step-by-step-website-tutorial/ */
 
 /* Import a font from google font api in different weights (boldness) */
-@import url("https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900");
+@import url("//fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900");
 
 /* '*' selector: apply to all elements */
 * {
