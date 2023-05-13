@@ -9,7 +9,7 @@
     padding: 0;
     /* border box includes padding and borders into the element, allowing for more consistent boxes */
     box-sizing: border-box;
-    background: #000;
+    background: #000000;
 }
 
 body {
@@ -287,3 +287,49 @@ h2{
 .unityWindow {
     aspect-ratio: 16 / 9;
 }
+
+/* https://code.tutsplus.com/tutorials/create-a-contact-form-in-php--cms-32314 */
+
+div.elem-group {
+    margin: 40px 0;
+    font-family: 'Prompt', sans-serif;
+  }
+  
+label {
+    display: block;
+    font-family: 'Prompt', sans-serif;
+    padding-bottom: 4px;
+    font-size: 1.25em;
+    color: white;
+  }
+  
+input, select, textarea {
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1.25em;
+    font-family: 'Prompt', sans-serif;
+    width: 500px;
+    padding: 8px;
+    color: white;
+  }
+  
+textarea {
+    height: 250px;
+  }
+  
+button.form {
+    height: 50px;
+    background: rgb(130, 76, 230);
+    color: white;
+    border: 1px solid rgb(255, 255, 255);
+    font-size: 1.25em;
+    font-family: 'Prompt', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+button.form:hover {
+    border: 1px solid white;
+    background: rgb(129, 0, 250);
+  } 
