@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ken Kobayashi</title>
+    <!-- Load Tailwind CSS from CDN for responsive utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load custom fonts from Google Fonts API -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900&display=swap" rel="stylesheet">
+    <style>
+        
+
+        /* Define custom base styles */
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #0f000f;
+            color: #ffffff;
+        }
+
+        /* Custom style for the logo: Edu TAS Beginner font and italic style */
+        .logoName {
+            font-family: 'Edu TAS Beginner', cursive;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- The hero section is set to a minimum height of the viewport to fill the screen -->
+    <div class="header min-h-screen flex flex-col">
+        <div class="container mx-auto px-4 w-full">
+
+            <!-- Navbar -->
+            <div id="navbar-placeholder"></div>
+
+            <!-- Hero content section -->
+            <div class="hero-row flex flex-col md:flex-row items-center justify-between mt-8 md:mt-4 md:h-[calc(100vh-100px)]">
+                <!-- Left text column -->
+                <div class="w-full md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-2">Ken Kobayashi</h1>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-light leading-snug text-purple-200">Sound & AI Technologist</h2>
+                    <p class="italic text-sm sm:text-base mt-4 max-w-lg mx-auto md:mx-0 leading-relaxed text-gray-300">
+                        Using technology to push the boundaries of art and technology
+                    </p>
+                    <div class="mt-2">
+                        <!-- Buttons for call to action to listen to music or look at projects -->
+                        <a href="./music.html" class="inline-block px-5 py-3 mt-8 text-lg font-semibold text-[rgb(41,41,41)] bg-[#f0f0f0] rounded-[40px] shadow-lg transition-all transform hover:scale-105 hover:bg-[rgb(98,54,121)] hover:text-white duration-900">Listen to my Music! &rarr;</a>
+                        <a href="./programming.html" class="inline-block px-5 py-3 mt-8 text-lg font-semibold text-[rgb(41,41,41)] bg-[#f0f0f0] rounded-[40px] shadow-lg transition-all transform hover:scale-105 hover:bg-[rgb(98,54,121)] hover:text-white duration-900 ml-4">View My Projects! &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Right image column -->
+                <div class="w-full md:w-1/2 flex justify-center items-center h-96 md:h-full image-container">
+                    <!-- The image classes are now applied directly -->
+                    <img src="./assets/images/2.jpeg" class="w-full h-full object-contain rounded-[40%] shadow-2xl" alt="A professional photo of Ken Kobayashi">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- JavaScript to load the navbar -->
+    <script>
+        // Use an asynchronous function to fetch the navbar HTML
+        async function loadNavbar() {
+            try {
+                const response = await fetch('nav.html');
+                const html = await response.text();
+                document.getElementById('navbar-placeholder').innerHTML = html;
+            } catch (error) {
+                console.error('Failed to load navbar:', error);
+            }
+        }
+        
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', loadNavbar);
+    </script>
+</body>
+</html>

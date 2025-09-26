@@ -75,31 +75,6 @@ ul li:hover, ul li a:hover {
     transition: 0.5s;
 }
 
-
-
-/* animated dropdown */
-
-/* Title and dropdown item buttons */
-.dropdown {
-    flex-direction: column;
-}
-
-
-.dropdownMenu {
-    /* position: absolute;
-    top: 0%;
-    left: 0;
-    width: 100%;
-    perspective: 100px; */
-    display: none;
-}
-
-.dropdown:hover .dropdownMenuAnimated {
-    display: block;
-}
-
-
-
 a {
     /* underline or overline, can be dotted and color changed */
     text-decoration: none;
@@ -122,6 +97,7 @@ p {
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-around;
+    padding-top: 2rem;
 }
  
 .col-2Left {
@@ -144,7 +120,7 @@ p {
 
 /* Gradient on image to transition into background smoothly 
 https://stackoverflow.com/questions/27634023/add-circular-fading-opacity-vignette-effect-to-images-in-css*/
-.col-2Right::after {
+/* .col-2Right::after {
     content: "";
     display: block;
     width: 100%;
@@ -154,10 +130,10 @@ https://stackoverflow.com/questions/27634023/add-circular-fading-opacity-vignett
     position: absolute;
     top: 0; left: 0;
 }
- 
+  */
 .col-2Left h1 {
     font-size: 50px;
-    line-height: 32px;
+    line-height: 1.2; /*unitless to scale with font size */
     margin: 25px 0;
     color: rgb(255, 255, 255);
 }
