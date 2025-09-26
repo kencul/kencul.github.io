@@ -13,10 +13,9 @@
 }
 
 body {
-    /* 1vh = 1% of height of viewport, allows for resizing with viewport size */
-    height: 100vh;
-    /* When multiple fonts are provided, it tries the first, then falls back to the next until one that is available is found */
     font-family: 'Prompt', sans-serif;
+    background-color: #0f000f;
+    color: #ffffff;
 }
 
 
