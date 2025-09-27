@@ -68,4 +68,4 @@ first attemp at the unity embed, the window is really short, and the unity logo 
 the github pages update extremely slow after pushing, so its very difficult to debug. I will push one more time, and hope it works in class!
 
 python -m http.server 8080
-http://127.0.0.1:8080/programming.html
+http://127.0.0.1:8080/
