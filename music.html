@@ -186,14 +186,14 @@
             // Find the fade overlay inside the container
             const fadeOverlay = container.querySelector('.fade-overlay');
 
-            if (container.classList.contains('max-h-24')) {
+            if (container.classList.contains('max-h-12')) {
                 // Expand
-                container.classList.remove('max-h-24', 'overflow-hidden');
+                container.classList.remove('max-h-12', 'overflow-hidden');
                 fadeOverlay.classList.add('hidden');
                 button.innerHTML = 'Read Less &uarr;';
             } else {
                 // Collapse
-                container.classList.add('max-h-24', 'overflow-hidden');
+                container.classList.add('max-h-12', 'overflow-hidden');
                 fadeOverlay.classList.remove('hidden');
                 button.innerHTML = 'Read More &darr;';
             }
