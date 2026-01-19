@@ -9,7 +9,7 @@
     "projects": [
         {
             "title": "VR Laser Synth",
-            "subtitle": "High-Dimensional Gesture Mapping & Real-time DSP",
+            "subtitle": "Virtual Reality Gesture Mapping & Real-time DSP",
             "link": "/projects/laser-synth/",
             "github": "https://github.com/kencul/VRLaserSynth",
             "description": "An immersive VR performance interface that translates controller data into the Csound audio engine. Built using a custom bridge between Unity and Csound, the system maps real-time spatial coordinates and rotation data to synthesizer parameters, allowing for expressive, gesture-based digital audio performance",
@@ -37,7 +37,7 @@
             "description": "An open-source performance system that bridges computer vision and algorithmic composition to transform real-time visual input into synchronized, generative audio. Utilizing the YOLO11 object detection model and Csound audio engine, the system leverages high-level semantic data, such as object position and scale, to create an intuitive, marker-less musical interface.",
             "tech": "Python, YOLO11, Csound, OpenCV",
             "tags": ["AI/ML", "Audio", "Python", "Csound"],
-            "demo": "/assets/images/projects/video-csound/demo-webcam.gif",
+            "demo": "/assets/images/projects/video-csound/thumbnail.png",
             "date": "2025-08-31"
         }
     ]
