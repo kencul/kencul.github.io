@@ -26,7 +26,7 @@
             "description": "A C# utility that extends the input capabilities of Risk of Rain 2 by bypassing the game's internal 1-to-1 keybinding constraints. By injecting custom listeners into the game’s core update loop, the mod enables asynchronous input polling for mouse-wheel and redundant key-mappings. This project focuses on improving player UX and accessibility, providing a solution for complex control schemes not supported by the native engine configuration.",
             "tech": "Unity, C#, BepInEx",
             "tags": ["Unity", "C#", "GameDev"],
-            "demo": "/assets/projects/sprint-double-bind/thumbnail.png",
+            "demo": "/assets/projects/sprint-double-bind/thumbnail.webp",
             "date": "2025-12-28"
         },
         {
@@ -37,7 +37,7 @@
             "description": "An open-source performance system that bridges computer vision and algorithmic composition to transform real-time visual input into synchronized, generative audio. Utilizing the YOLO11 object detection model and Csound audio engine, the system leverages high-level semantic data, such as object position and scale, to create an intuitive, marker-less musical interface.",
             "tech": "Python, YOLO11, Csound, OpenCV",
             "tags": ["AI/ML", "Audio", "Python", "Csound"],
-            "demo": "/assets/projects/video-csound/thumbnail.png",
+            "demo": "/assets/projects/video-csound/thumbnail.webp",
             "date": "2025-08-31"
         }
     ]
