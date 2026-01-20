@@ -97,6 +97,10 @@
                             </figcaption>
                         </figure>
 
+                        <p class = "mb-6">
+                            To facilitate rapid creative iteration, VideoCsound utilizes a <strong>template-based project structure</strong> that automates the environment setup for each performance. When initializing a new project, the system generates a standardized directory containing YAML configuration files and a boilerplate Csound orchestra (.orc) file. This approach decouples the core computer vision engine from the creative sound design assets, allowing users to define complex object-to-audio mappings in a centralized folder, avoiding altering the underlying Python source code. By centralizing parameters like detection thresholds, Csound bus names, and MIDI mappings within these templates, the system ensures that all user editted files are bundled into a single folder, allowing easy experimentation and sharing of projects.
+                        </p>
+
                         <div class="grid md:grid-cols-4 gap-6 bg-gray-900/50 p-6 rounded-lg border border-gray-800">
                             <div><span class="text-purple-400 font-bold block">Language</span> Python / Csound</div>
                             <div><span class="text-purple-400 font-bold block">Libraries</span> Ultralytics / OpenCV</div>
@@ -104,7 +108,32 @@
                             <div><span class="text-purple-400 font-bold block">Audio API</span> ctcsound</div>
                         </div>
                     </section>
-
+                    
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Key Outcomes</h2>
+                        
+                        <div class="space-y-6 text-gray-100">
+                            <p>
+                                The <strong>VideoCsound</strong> project demonstrates the potential for using semantic data from video to drive audio synthesis in a real-time performative context. The research resulted in several key findings for the field of interactive musical systems:
+                            </p>
+                            
+                            <ul class="list-disc list-inside space-y-3">
+                                <li>
+                                    <strong>Marker-less Tangible Interface:</strong> Proved that modern object detection (YOLO11) can replace traditional fiducial markers, allowing everyday environments and household items to serve as intuitive musical controllers, greatly reducing setup complexity and increasing accessibility.
+                                </li>
+                                <li>
+                                    <strong>Performative Occlusion:</strong> Discovered that the physical act of hiding and revealing objects creates a natural "performative affordance," providing an easy and intuitive method for starting, stopping, and structuring sounds during a live performance.
+                                </li>
+                                <li>
+                                    <strong>Semantic Mapping:</strong> Successfully implemented a pipeline that maps 3D bounding box parameters (position, width, and height) to synthesis variables, creating a transparent link between visual motion and sonic response.
+                                </li>
+                                <li>
+                                    <strong>Open-Source Framework:</strong> Contributed a modular, template-based Python toolkit that allows other artists and researchers to experiment with data-driven sonification and marker-less audiovisual interaction.
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    
                     <section>
                         <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide text-white uppercase">Challenges and Solutions</h2>
                         
@@ -132,36 +161,11 @@
                     </section>
 
                     <section>
-                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Key Outcomes</h2>
-                        
-                        <div class="space-y-6 text-gray-300">
-                            <p>
-                                The VideoCsound project successfully validated the potential for using high-level semantic data from video to drive complex audio synthesis in a real-time performative context. The research resulted in several key findings for the field of interactive musical systems:
-                            </p>
-                    
-                            <ul class="list-disc list-inside space-y-3">
-                                <li>
-                                    <strong>Marker-less Tangible Interface:</strong> Proved that modern object detection (YOLO11) can replace traditional fiducial markers, allowing everyday environments and household items to serve as intuitive musical controllers.
-                                </li>
-                                <li>
-                                    <strong>Performative Occlusion:</strong> Discovered that the physical act of hiding and revealing objects (occlusion) creates a natural "performative affordance," providing an intuitive method for starting, stopping, and structuring sounds during a live performance.
-                                </li>
-                                <li>
-                                    <strong>Semantic Mapping:</strong> Successfully implemented a pipeline that maps 3D bounding box parameters (position, width, and height) to granular synthesis variables, creating a transparent link between visual motion and sonic response.
-                                </li>
-                                <li>
-                                    <strong>Open-Source Framework:</strong> Contributed a modular, template-based Python toolkit that allows other artists and researchers to experiment with data-driven sonification and marker-less audiovisual interaction.
-                                </li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    <section>
                         <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Future Work</h2>
                         
-                        <div class="space-y-6 text-gray-300">
+                        <div class="space-y-6 text-gray-100">
                             <p>
-                                While VideoCsound serves as a successful prototype, the research identified three primary areas for expansion to evolve the system from an experimental tool into a versatile framework for data-driven art.
+                                While <strong>VideoCsound</strong> serves as a successful prototype, the research identified three primary areas for expansion to evolve the system from an experimental tool into a versatile framework for data-driven art.
                             </p>
                     
                             <div class="space-y-4">
@@ -195,5 +199,33 @@
     </div>
 
     <div id="footer-placeholder"></div>
+
+    <footer class="mt-20 pb-12 border-t border-purple-900/30">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 py-8">
+                
+                <div class="text-center md:text-left">
+                    <p class="text-white font-bold tracking-tight uppercase">Ken Kobayashi</p>
+                    <p class="text-gray-500 text-xs mt-1">Software Engineer & Creative Technologist</p>
+                </div>
+    
+                <div class="flex gap-6">
+                    <a href="https://github.com/kencul" class="text-gray-400 hover:text-purple-400 transition-colors">GitHub</a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">LinkedIn</a>
+                    <a href="mailto:your-email@example.com" class="text-gray-400 hover:text-purple-400 transition-colors">Email</a>
+                </div>
+    
+                <div class="text-center md:text-right">
+                    <a href="/index.html#projects" class="text-sm text-purple-400 hover:text-white font-bold transition-all border-b border-purple-400/30 pb-1">
+                        ← Back to All Projects
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-[10px] text-gray-700 uppercase tracking-[0.2em]">© 2026 • Designed & Built by Ken Kobayashi</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
