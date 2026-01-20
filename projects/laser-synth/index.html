@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laser Synth - Ken Kobayashi</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" type="image/png" href="/assets/images/icons/favicon.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900&display=swap" rel="stylesheet">
+    <script src="/assets/js/common.js" defer></script>
+</head>
+
+<body>
+    <div class="min-h-screen flex flex-col">
+        <div class="container mx-auto px-4 w-full">
+            <div id="navbar-placeholder"></div>
+
+            <main class="py-12 max-w-4xl mx-auto">
+                <header class="mb-8 border-b-2 border-purple-500 pb-6">
+                    <h1 class="text-5xl font-extrabold mb-2 text-white tracking-tight">Laser Synth</h1>
+                    <p class="text-xl text-purple-400 italic font-light">Expressive VR Performance Instrument</p>
+
+                    <div class="flex gap-4 mt-4">
+                        <a href="https://github.com/kencul/LaserSynth" target="_blank" rel="noopener noreferrer" 
+                           class="px-4 py-2 bg-gray-800 border border-gray-700 hover:bg-purple-600 rounded text-sm transition-all flex items-center gap-2 group">
+                            <svg class="w-5 h-5 fill-current text-gray-400 group-hover:text-white" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span>Source Code</span>
+                        </a>
+                        <a href="/assets/projects/laser-synth/Ken_Kobayashi_Laser_Synth_ICSC2024.pdf" download
+                        class="px-4 py-2 bg-gray-800 border border-gray-700 hover:bg-purple-600 rounded text-sm transition-all flex items-center gap-2 group">
+                            <svg class="w-5 h-5 fill-current text-gray-400 group-hover:text-white" viewBox="0 0 24 24">
+                                <path d="M11.363 2c4.155 0 2.637 6 2.637 6s6-1.518 6 2.638v11.362c0 .552-.448 1-1 1H5c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h6.363zM12 0H5c-1.657 0-3 1.343-3 3v18c0 1.657 1.343 3 3 3h14c1.657 0 3-1.343 3-3V9l-7-9z"/>
+                            </svg>
+                            <span>Download Paper (PDF)</span>
+                        </a>
+
+                        <a href="https://doi.org/10.21939/icsc2024" target="_blank" rel="noopener noreferrer" 
+                        class="px-4 py-2 bg-gray-800 border border-gray-700 hover:bg-purple-600 rounded text-sm transition-all flex items-center gap-2 group">
+                            <svg class="w-5 h-5 fill-none stroke-current text-gray-400 group-hover:text-white" viewBox="0 0 24 24" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            <span>Official Proceedings (DOI)</span>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- yt embed -->
+                <div class="w-full bg-gray-900 rounded-xl overflow-hidden border border-purple-900/30 mb-8">
+                    <div class="aspect-video w-full">
+                        <iframe 
+                            class="w-full h-full" 
+                            src="https://www.youtube.com/embed/EI8uzHKBp7k?si=nnPcKFFYekEy6jep" 
+                            title="VideoCsound Demonstration" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/EI8uzHKBp7k?si=nnPcKFFYekEy6jep" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+
+                <div class="space-y-12 text-gray-100 leading-relaxed">
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Overview</h2>
+                        <div class="space-y-4"> 
+                            <p>
+                                Modern sound synthesis offers infinite sonic possibilities, yet digital instruments often lack the physical expressiveness of their acoustic counterparts. The <strong>Laser Synth</strong> is a Virtual Reality (VR) instrument developed as my Bachelor's capstone project and presented at the <strong>ICSC 2024 Csound Conference</strong>. 
+                            </p>
+                            <p>
+                                Unlike VR installations that rely on generative randomness, the Laser Synth is designed for intentional, traditional performance. By utilizing spatial tracking in a 3D environment, the instrument allows performers to manipulate pitch, timbre, and complex modulation through physical hand gestures, creating an interactable interface that bridges human movement with the infinite possibilities of digital audio in a live performance context.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Instrument Control & Design</h2>
+                        <p class="mb-6">
+                            The instrument architecture centers on three objects: a stationary central crystal and two hand-held orbs. The lasers which connect these object represent the geometric relationship that drives the synthesis engine.
+                        </p>
+                        
+                        <div class="grid md:grid-cols-2 gap-8 my-4">
+                            <div class="space-y-4 bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                                <h3 class="text-xl font-semibold text-purple-400">Pitch & Filter</h3>
+                                <p class="text-sm">The distance between the <strong>Crystal and right hand</strong> controls pitch (quantized to 12-TET), while the distance between the <strong>Two Orbs</strong> modulates the filter cutoff frequency. This spatial mapping makes complex synthesis changes as natural as opening or closing one's arms.</p>
+                            </div>
+                            <div class="space-y-4 bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                                <h3 class="text-xl font-semibold text-purple-400">XY-Pad Rotation</h3>
+                                <p class="text-sm">The <strong>left hand's</strong> rotation functions as a 3D XY-pad, allowing for the simultaneous manipulation of up to four parameters like vibrato, reverb, and distortion through fluid wrist movements.</p>
+                            </div>
+                        </div>
+
+                        <figure class="my-9 p-6 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <img src="/assets/projects/laser-synth/LaserSynthImg1.png" 
+                                 alt="Laser Synth UI Elements" 
+                                 class="w-full h-[400px] object-cover">
+                            <figcaption class="text-center text-xs text-gray-200 mt-4 italic font-mono uppercase tracking-widest">
+                                Crystal and two held orbs, with the interface displaying real-time tuner and XY-pad mapping.
+                            </figcaption>
+                        </figure>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Technical Implementation</h2>
+                        <p class="mb-6">
+                            The Laser Synth leverages the <a href="https://github.com/rorywalsh/CsoundUnity" target="_blank" rel="noopener noreferrer" 
+                            class="text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 underline-offset-4 transition-colors">
+                            CsoundUnity</a> package to run Csound, a high-performance audio engine, within Unity, a real-time 3D environment. This decoupling allows Unity to focus on spatial logic and visual feedback while Csound handles precise sound synthesis.
+                        </p>
+                        
+                        <p class="mt-4 leading-relaxed">
+                            The Csound code was developed and refined in 
+                            <a href="https://cabbageaudio.com/" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 underline-offset-4 transition-colors">Cabbage</a> which provided a rapid prototyping environment before integration into Unity.
+                            To handle the complexities of VR interaction, I integrated the Unity package
+                            <a href="https://assetstore.unity.com/packages/tools/physics/auto-hand-vr-physics-interaction-165323" target="_blank" rel="noopener noreferrer" class="text-purple-400 hover:text-purple-300 underline decoration-purple-500/30 underline-offset-4 transition-colors">Auto Hand VR</a>. 
+                            This implemented VR into Unity in a way that makes intuitive, tactile control over the synth's modular elements.
+                        </p>
+
+                        <figure class="my-9 p-6 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <!-- invert image to make black arrows visible on black background -->
+                            <img src="/assets/projects/laser-synth/Implementation.png" 
+                                alt="VideoCsound Data Flow Diagram" 
+                                class="w-full brightness-100">
+                            <figcaption class="text-center text-xs text-gray-200 mt-4 italic font-mono uppercase tracking-widest">
+                                Tool Architecture and Data Flow
+                            </figcaption>
+                        </figure>
+
+                        <div class="grid md:grid-cols-4 gap-6 bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                            <div><span class="text-purple-400 font-bold block">Engine</span> Unity / VR</div>
+                            <div><span class="text-purple-400 font-bold block">Audio Engine</span> Csound</div>
+                            <div><span class="text-purple-400 font-bold block">Bridge</span> CsoundUnity</div>
+                            <div><span class="text-purple-400 font-bold block">Key Tools</span> Cabbage / Auto Hand</div>
+                        </div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Key Outcomes</h2>
+                        <div class="space-y-6 text-gray-100">
+                            <ul class="list-disc list-inside space-y-3">
+                                <li>
+                                    <strong>Natural Interaction:</strong> Proved that spatial distances in VR provide a more intuitive "theremin-like" control for synthesis than traditional knobs and sliders.
+                                </li>
+                                <li>
+                                    <strong>Visual Reinforcement:</strong> Developed a HUD including a 3D chromatic tuner and dynamic laser color-coding to provide the performer with the necessary feedback for precise live performance.
+                                </li>
+                                <li>
+                                    <strong>Academic Recognition:</strong> Successfully presented at the International Csound Conference (ICSC) 2024, highlighting the intersection of VR and professional-grade synthesis.
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Challenges & Solutions</h2>
+                        <div class="space-y-8 text-gray-100">
+                            <div class="space-y-4">
+                                <h3 class="text-xl text-purple-400 tracking-tight">3D Pitch Accuracy</h3>
+                                <p>
+                                    Performing melodies in an invisible 3D space is notoriously difficult, as there is no haptic feedback or "fret" to guide the hand.
+                                </p>
+                                <p>
+                                    <strong>Solution:</strong> Implemented a 12-tone equal temperament quantization engine within the Unity-to-Csound pipeline. This provided a "margin of error," allowing the performer to hit the desired frequency while maintaining a smooth, expressive feel.
+                                </p>
+                            </div>
+                    
+                            <div class="space-y-4">
+                                <h3 class="text-xl text-purple-400 tracking-tight">Sound Design Testing</h3>
+                                <p>
+                                    When creting a Csound instrument for the system, needing to test within VR then take off the VR headset to adjust the code was cumbersome.
+                                </p>
+                                <p>
+                                    <strong>Solution:</strong> Introduced simple dropdown and slider controls within the VR environment to adjust 10 key parameters, allowing for basic sound design tweaks without removing the headset.
+                                </p>
+
+                                <figure class="my-9 p-6 bg-gray-900/50 rounded-lg border border-gray-800">
+                                    <!-- invert image to make black arrows visible on black background -->
+                                    <img src="/assets/projects/laser-synth/LaserSynthSliders.png" 
+                                        alt="VideoCsound Data Flow Diagram" 
+                                        class="w-full brightness-100">
+                                    <figcaption class="text-center text-xs text-gray-200 mt-4 italic font-mono uppercase tracking-widest">
+                                        Sliders to adjust 10 parameters within VR
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Future Considerations</h2>
+                        
+                        <div class="space-y-6 text-gray-100">
+                            <p>
+                                The current iteration of <strong>Laser Synth</strong> serves as a proof-of-concept for immersive audio manipulation. The project identifies several key areas where the framework could be expanded:
+                            </p>
+                    
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-purple-400 font-bold text-lg">Scalable Polyphony</h3>
+                                    <p>
+                                        A primary goal for future iterations would be the transition from monophonic to polyphonic synthesis. This could be achieved by manifesting <strong>multiple resonant crystals</strong> as independent audio voices, allowing for complex harmonic layering and multi-object manipulation within the 3D environment.
+                                    </p>
+                                </div>
+                    
+                                <div>
+                                    <h3 class="text-purple-400 font-bold text-lg">Expanded Preset Architecture</h3>
+                                    <p>
+                                        To lower the barrier to entry, a future design goal would include a <strong>comprehensive preset ecosystem</strong>. Providing high-quality "out-of-the-box" configurations would ensure immediate sonic gratification for new users, while allowing advanced performers to capture, recall, and toggle between custom parameter states during live use.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
