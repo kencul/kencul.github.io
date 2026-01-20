@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ken Kobayashi - Music Portfolio</title>
+    <link rel="icon" type="image/png" href="./assets/images/icons/favicon.png"> 
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load custom fonts from Google Fonts API -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900&display=swap" rel="stylesheet">
+    <style>
+        /* Define custom base styles for consistency */
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #0f000f;
+            color: #ffffff;
+        }
+
+        /* Custom style for the logo: Edu TAS Beginner font and italic style */
+        .logoName {
+            font-family: 'Edu TAS Beginner', cursive;
+            font-style: italic;
+        }
+
+        /* Ensure iframes scale responsively within their containers */
+        .responsive-iframe-container {
+            /* 16:9 aspect ratio padding-bottom is (9/16) * 100% = 56.25% */
+            padding-bottom: 56.25%;
+            position: relative;
+            height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom sizing for the SoundCloud embed, as it has a fixed height */
+        .soundcloud-embed {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<!-- Classes can only be applied to as many elements as you want, id can only be used on one element on a page -->
+<body>
+    <div class="header">
+        <div class="container">
+
+            <!-- Placeholder for the dynamic Navbar -->
+            <div id="navbar-placeholder"></div>
+ 
+            </div>
+            <!-- end navbar -->
+            <div class="row" style="padding-top: 2rem;">
+                <div class="col-2Right">
+                    <img width="90%" src="assets/images/photos/3.jpeg" alt="" class="centerImg">
+                </div>
+                <div class="col-2Left">
+                    <div class="col-2Left">
+                        <h1>Ken Kobayashi</h1>
+                        <h2>Music Producer, Violinist, Programmer</h2>
+                        <p class="text_para" style="padding-top: 1rem">
+                            Born and raised in America, I started classical violin at 4 years old. 
+                            <br>My mother, who was a pianist, pushed me to become a better musician everyday.
+                            <br>Throughout my school life, I participated in orchestras, recitals and contests with my violin performance.
+                            <br>
+                            <br>During my junior year of highschool, I discovered music production, and forced my father to buy Ableton Live.
+                            <br>From then on, I self taught myself music production and fell in love with electronic music creation.
+                            <br>
+                            <br>Now studying at the Berklee College of Music, I am learning not only music production as an Electronic Production and Design major, but also jazz violin, and programming, which is why this website exists!
+                            <br>
+                            <br>This website was created from scratch with html by me!
+                            <br>It is a collection of all my musical and programming work, and is like a portfolio that I have on the internet for all to see.
+                            <br>
+                            <br>I hope you enjoy!
+                        </p>      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to load the navbar and implement generic Read More functionality -->
+    <script>
+        // Function to load the navbar content
+        async function loadNavbar() {
+            try {
+                // IMPORTANT: Ensure this path is correct based on your file setup
+                const response = await fetch('/nav.html'); 
+                const html = await response.text();
+                document.getElementById('navbar-placeholder').innerHTML = html;
+            } catch (error) {
+                console.error('Failed to load navbar:', error);
+            }
+        }
+    </script>
+</body>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoCsound - Ken Kobayashi</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" type="image/png" href="/assets/images/icons/favicon.png"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500;600;700;800;900&family=Edu+TAS+Beginner:wght@600;900&display=swap" rel="stylesheet">
+    <script src="/assets/js/common.js" defer></script>
+</head>
+
+<body>
+    <div class="min-h-screen flex flex-col">
+        <div class="container mx-auto px-4 w-full">
+            <div id="navbar-placeholder"></div>
+
+            <main class="py-12 max-w-4xl mx-auto">
+                <header class="mb-12 border-b-2 border-purple-500 pb-6">
+                    <h1 class="text-5xl font-extrabold mb-2 text-white tracking-tight">Video Csound</h1>
+                    <p class="text-xl text-purple-400 italic font-light">Generating Music from Video with Object Tracking through Computer Vision</p>
+
+                    <div class="flex gap-4 mt-4">
+                        <!-- github link -->
+                        <a href="https://github.com/kencul/videoCsound" target="_blank" rel="noopener noreferrer" 
+                           class="px-6 py-2 bg-gray-800 border border-gray-700 hover:bg-purple-600 rounded text-sm font-bold transition-all flex items-center gap-2 group">
+                            <svg class="w-5 h-5 fill-current text-gray-400 group-hover:text-white" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span>Source Code</span>
+                        </a>
+                        <!-- thesis download link -->
+                        <a href="/assets/projects/video-csound/thesisFinal.pdf" download
+                        class="px-6 py-2 bg-gray-800 border border-gray-700 hover:bg-purple-600 rounded text-sm font-bold transition-all flex items-center gap-2 group">
+                            <svg class="w-5 h-5 fill-current text-gray-400 group-hover:text-white" viewBox="0 0 24 24">
+                                <path d="M11.363 2c4.155 0 2.637 6 2.637 6s6-1.518 6 2.638v11.362c0 .552-.448 1-1 1H5c-.552 0-1-.448-1-1V3c0-.552.448-1 1-1h6.363zM12 0H5c-1.657 0-3 1.343-3 3v18c0 1.657 1.343 3 3 3h14c1.657 0 3-1.343 3-3V9l-7-9zM15 12h-6v2h6v-2zM15 16h-6v2h6v-2zM12 8h-3v2h3v-2z"/>
+                            </svg>
+                            <span>Thesis Paper</span>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- yt embed -->
+                <div class="w-full bg-gray-900 rounded-xl overflow-hidden border border-purple-900/30 mb-16 shadow-1xl shadow-purple-900/20">
+                    <div class="aspect-video w-full">
+                        <iframe 
+                            class="w-full h-full" 
+                            src="https://www.youtube.com/embed/zbPA626amCo?si=fluW72aujhdFnRXl" 
+                            title="VideoCsound Demonstration" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="space-y-16 text-gray-100 leading-relaxed">
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Overview</h2>
+                        <!-- add line spacing between paragraphs -->
+                        <div class="space-y-4"> 
+                            <p>
+                                Traditional acoustic instruments offer a natural, symbiotic relationship between physical action and sonic response. 
+                                In contrast, laptop-based electronic music often lacks this visual expressiveness, making it difficult for an audience to interpret the 
+                                relationship between a performer's actions and the resulting sound.
+                            </p>
+                    
+                            <p>
+                                <strong>VideoCsound</strong> is an open-source performance system designed to bridge this gap. 
+                                Unlike previous interfaces that rely on physical markers (fiducials), VideoCsound utilizes state-of-the-art 
+                                computer vision to track everyday objects and translate their high-level semantic data (ex. position, scale, and 
+                                occlusion) into real-time synthesis parameters. 
+                            </p>
+                            
+                            <p>
+                                By treating the visual world as a "tangible interface," the project creates a transparent, 
+                                multimodal experience where the artistry hidden within data becomes both audible and visually intuitive to an audience.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Technical Implementation</h2>
+                        <p class = "mb-6">
+                            VideoCsound is built on a modular Python pipeline that applies high-speed object detection with real-time audio synthesis. 
+                            The project uses OpenCV for video processing and Ultralytics for computer vision model processing, together extracting bounding box coordinates and unique track IDs of objects found in the incoming video stream. The Csound Python API acts as the sound engine which drives the sound synthesis, modulating parameters of the sound by the bounding box data. OpenCV is used for the output video as well, overlaying visual indicators such as bounding boxes and track IDs onto the video feed to provide real-time feedback to the performer.
+                        </p>
+                        
+                        <figure class="my-9 p-6 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <!-- invert image to make black arrows visible on black background -->
+                            <img src="/assets/projects/video-csound/videoCsoundDataFlow.png" 
+                                alt="VideoCsound Data Flow Diagram" 
+                                class="w-full invert brightness-100">
+                            <figcaption class="text-center text-xs text-gray-200 mt-4 italic font-mono uppercase tracking-widest">
+                                Figure: Sequential Data Flow Architecture
+                            </figcaption>
+                        </figure>
+
+                        <p class = "mb-6">
+                            To facilitate rapid creative iteration, VideoCsound utilizes a <strong>template-based project structure</strong> that automates the environment setup for each performance. When initializing a new project, the system generates a standardized directory containing YAML configuration files and a boilerplate Csound orchestra (.orc) file. This approach decouples the core computer vision engine from the creative sound design assets, allowing users to define complex object-to-audio mappings in a centralized folder, avoiding altering the underlying Python source code. By centralizing parameters like detection thresholds, Csound bus names, and MIDI mappings within these templates, the system ensures that all user editted files are bundled into a single folder, allowing easy experimentation and sharing of projects.
+                        </p>
+
+                        <div class="grid md:grid-cols-4 gap-6 bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+                            <div><span class="text-purple-400 font-bold block">Language</span> Python / Csound</div>
+                            <div><span class="text-purple-400 font-bold block">Libraries</span> Ultralytics / OpenCV</div>
+                            <div><span class="text-purple-400 font-bold block">CV Model / Dataset</span> YOLO11n / COCO</div>
+                            <div><span class="text-purple-400 font-bold block">Audio API</span> ctcsound</div>
+                        </div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Key Outcomes</h2>
+                        
+                        <div class="space-y-6 text-gray-100">
+                            <p>
+                                The <strong>VideoCsound</strong> project demonstrates the potential for using semantic data from video to drive audio synthesis in a real-time performative context. The research resulted in several key findings for the field of interactive musical systems:
+                            </p>
+                            
+                            <ul class="list-disc list-inside space-y-3">
+                                <li>
+                                    <strong>Marker-less Tangible Interface:</strong> Proved that modern object detection (YOLO11) can replace traditional fiducial markers, allowing everyday environments and household items to serve as intuitive musical controllers, greatly reducing setup complexity and increasing accessibility.
+                                </li>
+                                <li>
+                                    <strong>Performative Occlusion:</strong> Discovered that the physical act of hiding and revealing objects creates a natural "performative affordance," providing an easy and intuitive method for starting, stopping, and structuring sounds during a live performance.
+                                </li>
+                                <li>
+                                    <strong>Semantic Mapping:</strong> Successfully implemented a pipeline that maps 3D bounding box parameters (position, width, and height) to synthesis variables, creating a transparent link between visual motion and sonic response.
+                                </li>
+                                <li>
+                                    <strong>Open-Source Framework:</strong> Contributed a modular, template-based Python toolkit that allows other artists and researchers to experiment with data-driven sonification and marker-less audiovisual interaction.
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide text-white uppercase">Challenges and Solutions</h2>
+                        
+                        <div class="space-y-12 text-gray-100">
+                            <div class="space-y-4">
+                                <h3 class="text-xl text-purple-400 tracking-tight">Real-Time Audio Latency</h3>
+                                <p>
+                                    A primary challenge identified across demonstrations was a consistent delay of approximately 500ms between visual events and their corresponding audio responses. This lag significantly detracted from the sense of direct, real-time interactivity required for a responsive musical instrument.
+                                </p>
+                                <p>
+                                    <strong>Solution:</strong> While the live processing approach was maintained for this prototype to prioritize real-time sound design experimentation, future optimizations focus on shifting video handling to native Ultralytics methods. This enables advanced techniques such as "video stride" (processing every Nth frame) and batch processing to significantly reduce the computational load on the processing pipeline.
+                                </p>
+                            </div>
+                    
+                            <div class="space-y-4">
+                                <h3 class="text-xl text-purple-400 tracking-tight">Sonic Monotony with Static Objects</h3>
+                                <p>
+                                    Initial tests revealed that stationary objects in dense scenes produced monotonous, undifferentiated drones because the audio was mapped strictly to shifting positional coordinates. This revealed the need for instruments that could create auditory interest independent of physical object movement.
+                                </p>
+                                <p>
+                                    <strong>Solution:</strong> Csound instruments were redesigned to include internal modulation, such as sample-and-hold based amplitude modulation. This allows the system to generate rhythmic and timbral interest over time, independent of changes in an object’s physical coordinates, ensuring a dynamic soundscape regardless of object movement.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Future Work</h2>
+                        
+                        <div class="space-y-6 text-gray-100">
+                            <p>
+                                While <strong>VideoCsound</strong> serves as a successful prototype, the research identified three primary areas for expansion to evolve the system from an experimental tool into a versatile framework for data-driven art.
+                            </p>
+                    
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-purple-400 font-bold text-lg">GUI Development</h3>
+                                    <p>
+                                        The current prototype relies on a command-line interface, which can be intimidating for non-technical users. Transitioning to a desktop application using a Python GUI toolkit like <i>Tkinter</i> or <i>PySide</i> would make the system more intuitive and accessible to artists and musicians without programming expertise.
+                                    </p>
+                                </div>
+                    
+                                <div>
+                                    <h3 class="text-purple-400 font-bold text-lg">Enhanced Parameter Mapping</h3>
+                                    <p>
+                                        Future development will focus on extracting more nuanced data beyond simple bounding box coordinates. This includes integrating <strong>object velocity and acceleration</strong> to map physical energy to sonic intensity, as well as using the model's <strong>confidence score</strong> to introduce organic instability or timbral variations based on detection certainty.
+                                    </p>
+                                </div>
+                    
+                                <div>
+                                    <h3 class="text-purple-400 font-bold text-lg">Expansion of Applications</h3>
+                                    <p>
+                                        The <strong>VideoCsound</strong> framework has potential applications beyond experimental music, including <strong>educational tools</strong> for demonstrating AI principles and <strong>practical scenarios</strong> like kinesthetic feedback for physical therapy or spatial audio alerts for industrial safety systems.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
