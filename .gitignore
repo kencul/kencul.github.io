@@ -1,0 +1,9 @@
+node_modules/
+todo.md
+
+# Next.js build output
+.next/
+out/
+
+# If you use the Next.js Telemetry
+.next/cache/
