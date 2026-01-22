@@ -16,8 +16,27 @@ const eduTas = Edu_TAS_Beginner({
 });
 
 export const metadata = {
-  title: "Ken Kobayashi",
+  title: {
+    default: "Ken Kobayashi",
+    template: "%s | Ken Kobayashi", // This adds your name to every page title automatically
+  },
   description: "Portfolio of Ken Kobayashi, sound enginner and audio developer",
+  openGraph: {
+    title: "Ken Kobayashi",
+    description: "Exploring the intersection of sound and code.",
+    url: "https://kenmusic.net",
+    siteName: "Ken Kobayashi",
+    images: [
+      {
+        url: "/images/photos/og-img.png",
+        width: 1200,
+        height: 630,
+        alt: "Portfolio Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  }
 };
 
 

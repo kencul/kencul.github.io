@@ -109,6 +109,70 @@
                             <div><span class="text-purple-400 font-bold block">Audio API</span> ctcsound</div>
                         </div>
                     </section>
+
+                    <section className="space-y-12">
+                        <h2 className="text-xl font-bold text-white uppercase tracking-wider border-l-4 border-highlight pl-4">
+                          Technical Implementation
+                        </h2>
+                      
+                        {/* Part 1: The Processing Pipeline */}
+                        <div className="grid md:grid-cols-2 gap-8 items-start">
+                          <div className="space-y-4 text-sm text-gray-400">
+                            <h3 className="text-white font-semibold uppercase tracking-tight text-xs">The Real-Time Pipeline</h3>
+                            <p>
+                              VideoCsound utilizes a modular Python pipeline to synchronize high-speed object detection with real-time audio synthesis. 
+                              <span className="text-white"> OpenCV</span> handles the video stream, while <span className="text-white">Ultralytics YOLO</span> extracts bounding box coordinates and unique track IDs.
+                            </p>
+                            <p>
+                              These data points are fed into the <span className="text-white">Csound Python API (ctcsound)</span>, which modulates synthesis parameters in real-time. The processed video is then rendered with OpenCV overlays, providing the performer with immediate visual feedback of the tracking state.
+                            </p>
+                          </div>
+                      
+                          {/* Tech Stack Summary Chip */}
+                          <div className="bg-gray-900/40 p-6 rounded-xl border border-white/5 grid grid-cols-2 gap-4">
+                            {[
+                              { label: "Vision", val: "YOLO11 / OpenCV" },
+                              { label: "Audio", val: "Csound / ctcsound" },
+                              { label: "Logic", val: "Python 3.11" },
+                              { label: "Data", val: "YAML / NumPy" }
+                            ].map(item => (
+                              <div key={item.label}>
+                                <span className="text-highlight font-bold block text-[10px] uppercase mb-1">{item.label}</span>
+                                <span className="text-white text-xs">{item.val}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      
+                        {/* Data Flow Diagram */}
+                        <figure className="p-4 bg-gray-900/20 rounded-xl border border-white/5">
+                          <div className="relative w-full h-48 md:h-64">
+                            <Image 
+                              src="/projects/video-csound/videoCsoundDataFlow.webp" 
+                              alt="VideoCsound Data Flow Diagram" 
+                              fill
+                              className="object-contain invert brightness-100 opacity-80"
+                            />
+                          </div>
+                          <figcaption className="text-center text-[10px] text-gray-500 mt-4 uppercase tracking-[0.2em] font-mono">
+                            Sequential Data Flow Architecture
+                          </figcaption>
+                        </figure>
+                        
+                        
+                      
+                        {/* Part 2: Project Architecture */}
+                        <div className="space-y-4">
+                          <h3 className="text-white font-semibold uppercase tracking-tight text-xs">Architecture & Iteration</h3>
+                          <p className="text-sm text-gray-400">
+                            To decouple the CV engine from creative assets, the system employs a <span className="text-highlight-light font-medium">template-based project structure</span>. 
+                            Initializing a performance generates a standardized directory with YAML configurations and boilerplate Csound orchestra (.orc) files.
+                          </p>
+                          <div className="bg-highlight/5 p-4 rounded-lg border-l-2 border-highlight/20 text-xs text-gray-400 italic">
+                            This allows users to define complex object-to-audio mappings, detection thresholds, and bus names in a centralized location without modifying the underlying Python source code.
+                          </div>
+                        </div>
+                      </section>
                     
                     <section>
                         <h2 class="text-2xl font-bold text-white mb-4 border-l-4 border-purple-500 pl-4 tracking-wide">Key Outcomes</h2>

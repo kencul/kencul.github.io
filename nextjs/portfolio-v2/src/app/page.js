@@ -39,7 +39,7 @@ export default function Home() {
             alt="Ken Kobayashi"
             fill
             priority
-            className="object-contain drop-shadow-[0_0_2px_rgba(255,255,255,0.2)]" 
+            className="object-contain drop-shadow-[0_0_2px_rgba(255,255,255,0.3)]" 
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>

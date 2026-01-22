@@ -31,7 +31,7 @@
         },
         {
             "title": "VideoCsound",
-            "subtitle": "MSc Thesis: Computer Vision & Algorithmic Composition",
+            "subtitle": "MSc Thesis: Generating Music from Video with Object Tracking through Computer Vision",
             "link": "/projects/video-csound/",
             "github": "https://github.com/kencul/videoCsound",
             "description": "An open-source performance system that bridges computer vision and algorithmic composition to transform real-time visual input into synchronized, generative audio. Utilizing the YOLO11 object detection model and Csound audio engine, the system leverages high-level semantic data, such as object position and scale, to create an intuitive, marker-less musical interface.",

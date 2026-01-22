@@ -28,6 +28,9 @@
     color: var(--foreground);
     @apply antialiased;
   }
+  p {
+    @apply text-gray-100;
+  }
 }
 
 /* Use your theme variable here instead of the hardcoded font name */

@@ -1,6 +1,13 @@
 import musicData from '@/data/music.json'; 
 import TrackCard from '@/components/TrackCard';
 
+export async function generateMetadata() {
+    return {
+      title: `Music`,
+      description: "Showcase of music by Ken Kobayashi"
+    };
+  }
+
 export default function MusicPage() {
     return (
       <div className="py-8">
