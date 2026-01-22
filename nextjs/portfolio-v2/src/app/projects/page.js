@@ -1,6 +1,7 @@
 import projectsData from "@/data/projects.json";
 import Card from "@/components/ui/card";
 import FilteredProjects from "@/components/projects/FilteredProjects";
+import { getAllProjects } from "@/lib/mdx";
 
 export async function generateMetadata() {
   return {
@@ -9,21 +10,22 @@ export async function generateMetadata() {
   };
 }
 
-export default function ProgrammingPage() {
+export default async function ProgrammingPage() {
   // Create a lightweight version of the data for the list view to avoid passing data used for case studies
-  const summaryProjects = projectsData.projects.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    subtitle: p.subtitle,
-    link: p.link,
-    github: p.github,
-    description: p.description,
-    tech: p.tech,
-    tags: p.tags,
-    demo: p.demo,
-    date: p.date,
-  }));
+  // const summaryProjects = projectsData.projects.map((p) => ({
+  //   slug: p.slug,
+  //   title: p.title,
+  //   subtitle: p.subtitle,
+  //   link: p.link,
+  //   github: p.github,
+  //   description: p.description,
+  //   tech: p.tech,
+  //   tags: p.tags,
+  //   demo: p.demo,
+  //   date: p.date,
+  // }));
 
+  const summaryProjects = await getAllProjects();
   return (
     <div className="py-8">
       <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 border-b-2 border-highlight pb-4">

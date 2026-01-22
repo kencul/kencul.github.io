@@ -49,7 +49,8 @@ export default function RootLayout({ children }) {
         className={`${prompt.variable} ${eduTas.variable} antialiased min-h-screen flex flex-col`}
       >
 
-        <header className="container mx-auto px-4 py-6 flex justify-between items-center">
+        <header className="border-b py-4 mb-2 border-highlight/20">
+        <div className="container mx-auto px-4 flex justify-between items-center">
           <Link href="/" className="logoName text-2xl font-black text-highlight">ken</Link>
           <nav>
             <ul className="flex gap-4 md:gap-12 text-base md:text-lg font-bold">
@@ -61,6 +62,7 @@ export default function RootLayout({ children }) {
               
             </ul>
           </nav>
+          </div>
         </header>
 
         <main className="flex-1 flex flex-col container mx-auto px-4">

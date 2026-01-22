@@ -17,7 +17,7 @@
   /* defining colors */
   --color-highlight: var(--color-purple-400);
   --color-highlight-bold: var(--color-purple-950);
-  --color-highlight-light: var(--color-purple-200);
+  --color-highlight-light: var(--color-purple-300);
 }
 
 @layer base {
@@ -27,9 +27,6 @@
     background-color: var(--background);
     color: var(--foreground);
     @apply antialiased;
-  }
-  p {
-    @apply text-gray-100;
   }
 }
 
