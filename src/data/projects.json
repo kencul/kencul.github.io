@@ -6,7 +6,7 @@
         { "category": "Cloud & DevOps", "items": "AWS Certified, Serverless, Git" },
         { "category": "Creative Systems", "items": "Csound, Wwise, Unity, Unreal, Max/MSP" }
     ],
-    "projects": [
+    ".projects": [
         {
             "slug": "laser-synth",
             "title": "VR Laser Synth",

@@ -74,36 +74,39 @@ export const mdxComponents = {
     </div>
   ),
 
-    FutureWork: ({ items }) => (
-        <ul className="space-y-8 border-l border-white/10 ml-1">
-        {items.map((item, i) => (
-            <li key={i} className="relative pl-6 before:absolute before:-left-[4.5px] before:top-2 before:size-2 before:rounded-full before:bg-highlight">
-            <h3 className="text-highlight font-bold text-lg">{item.title}</h3>
-            <p className="text-base">{item.desc}</p>
-            </li>
-        ))}
-        </ul>
-    ),
+  FutureWork: ({ items }) => (
+      <ul className="space-y-8 border-l border-white/10 ml-1">
+      {items.map((item, i) => (
+          <li key={i} className="relative pl-6 before:absolute before:-left-[4.5px] before:top-2 before:size-2 before:rounded-full before:bg-highlight">
+          <h3 className="text-highlight font-bold text-lg">{item.title}</h3>
+          <p className="text-base">{item.desc}</p>
+          </li>
+      ))}
+      </ul>
+  ),
 
-    TwoSmCards: ({ items }) => (
-        <div className="flex justify-center gap-8 my-4">
+  TwoSmCards: ({ items }) => (
+      <div className="flex justify-center gap-8 my-4">
 
-        {items.map((item, i) => (
-            <Card key={i} className="space-y-4 max-w-sm">
-                <h3 className="text-xl font-semibold text-purple-400">{item.title}</h3>
-                <p className="text-sm">{item.desc}</p>
-            </Card>
-        ))}
-        </div>
-    ),
+      {items.map((item, i) => (
+          <Card key={i} className="space-y-4 max-w-sm">
+              <h3 className="text-xl font-semibold text-purple-400">{item.title}</h3>
+              <p className="text-sm">{item.desc}</p>
+          </Card>
+      ))}
+      </div>
+  ),
 
-    URL: ({text, url}) => (
-        <Link 
-                href={url}
-                target="_blank"
-                className="text-highlight hover:text-highlight-light underline underline-offset-4 transition-colors"
-        >
-            {text} 
-        </Link>
-    )
+  URL: ({text, url}) => (
+    <Link 
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-highlight hover:text-highlight-light underline underline-offset-4 transition-colors"
+    >
+      {text} 
+    </Link>
+  ),
+
+  YouTube: (props) => <LiteVideo {...props} />,
 };
