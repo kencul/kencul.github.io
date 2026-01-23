@@ -13,7 +13,7 @@ export default function MusicPage() {
       <div className="py-8">
         {/* Page Header */}
         <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-12 border-b-2 border-highlight pb-6">
-          Music Production Portfolio
+          Music Portfolio
         </h1>
   
         {/* Grid mapping over music JSON data */}

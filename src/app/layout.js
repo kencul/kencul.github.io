@@ -45,6 +45,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://www.kenmusic.net" />
+      </head>
       <body 
         className={`${prompt.variable} ${eduTas.variable} antialiased min-h-screen flex flex-col`}
       >

@@ -1,4 +1,4 @@
-import { getProjectBySlug } from "@/lib/mdx";
+import { getProjectBySlug, getAllProjects} from "@/lib/mdx";
 import { mdxComponents } from "@/components/mdx-components";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { GithubIcon, LinkIcon} from "@/components/ui/icons";

@@ -20,6 +20,8 @@
   --color-highlight-light: var(--color-purple-300);
 }
 
+
+
 @layer base {
   body {
     /* use variable with backup fonts */
@@ -27,6 +29,10 @@
     background-color: var(--background);
     color: var(--foreground);
     @apply antialiased;
+  }
+  html {
+    /* overflow-x: hidden; */
+    scrollbar-gutter: stable;
   }
 }
 
