@@ -1,0 +1,51 @@
+[
+    {
+        "id": "ruin",
+        "title": "Ruin",
+        "artist": "ken",
+        "description": "A track using sounds from the Csound Catalog, a CD-ROM made by Dr. Boulanger in 2000 containing pieces of audio made in the Csound language. These audio files were sampled, and simple tape effects were applied for the piece. This track was made for a class competition for Dr. Boulanger's electroacoustic composition class in my time at Berklee.",
+        "type": "audio",
+        "source": "/audio/ruin.wav",
+        "featured": true
+    },
+    {
+        "id": "mess",
+        "title": "Mess I've Left Behind",
+        "artist": "ken ft. KAFU",
+        "description": "A trap inspired electronic pop song using singing synthesizer, KAFU.",
+        "type":"audio",
+        "source": "/audio/messLeftBehind.wav"
+    },
+    {
+      "id": "candy",
+      "title": "Taste of Candy",
+      "artist": "ken ft. Hatsune Miku",
+      "description": "A farewell lovesong, my attempt at a bittersweet ballad.",
+      "type": "youtube",
+      "source": "https://www.youtube.com/embed/PO_y94pqrHY"
+    },
+    {
+      "id": "loona",
+      "title": "LOONA - Flip That",
+      "artist": "ken Remix",
+      "description": "A house/future bass remix of a K-pop song.",
+      "type": "soundcloud",
+      "source": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1316754085"
+    },
+    {
+        "id": "forget-me",
+        "title": "Forget Me",
+        "artist": "ken ft. Hatsune Miku",
+        "description": "My first track, featuring the vocaloid singer, Hatsune Miku.",
+        "type": "youtube",
+        "source": "https://www.youtube.com/embed/jtR-VZRXP48"
+    },
+    {
+        "id": "out-of-love",
+        "title": "Out of Love",
+        "artist": "ken ft. Hatsune Miku",  
+        "description": "A revisit to Miku, learning the depths and details of vocaloid synthesis.",
+        "type": "youtube",
+        "source": "https://www.youtube.com/embed/XRA3QPuZ6zw"
+    }
+  ]

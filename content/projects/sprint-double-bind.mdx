@@ -1,0 +1,84 @@
+---
+title: "Risk of Rain 2 Mod - Sprint Double Bind"
+subtitle: "Runtime Assembly Hooking & Input Logic Injection"
+github: "https://github.com/kencul/SprintDoubleBind"
+description: "A C# utility that extends the input capabilities of Risk of Rain 2 by bypassing the game's internal 1-to-1 keybinding constraints. By injecting custom listeners into the game’s core update loop, the mod enables asynchronous input polling for mouse-wheel and redundant key-mappings. This project focuses on improving player UX and accessibility, providing a solution for complex control schemes not supported by the native engine configuration."
+tech: "Unity, C#, BepInEx"
+tags: ["Unity", "GameDev"]
+demo: "/projects/sprint-double-bind/thumbnail.webp"
+date: "2025-12-28"
+videoEmbed: "https://www.youtube.com/embed/-JXSU6auCFA?si=sRaEufhAKanNzDZb"
+externalLink: 
+- {text: "Thunderstore Download", url: "https://thunderstore.io/package/kencul/SprintDoubleBind/"}
+---
+
+## Overview
+
+Risk of Rain 2 (RoR2) is a fast-paced roguelike where movement is the primary survival mechanic. However, the game engine natively enforces a strict **1-to-1 keybinding constraint**, preventing players from assigning secondary keys to critical actions like sprinting.
+
+<span className="text-highlight-light">Sprint Double Bind</span> is a BepInEx plugin that bypasses these engine limitations. By hooking into the game's runtime assembly, it enables complex input schemes—such as mouse-scroll sprinting—to improve accessibility and enable advanced mechanical techniques like the "Acrid Sprint Cancel."
+
+## Core Functionality
+
+The mod focuses on three primary input vectors that are otherwise unsupported or restricted within the vanilla configuration menu.
+
+<TwoSmCards items={[
+    {
+        title: <><span className="text-highlight">Asynchronous Scroll Polling:</span></>, 
+        desc: <>Enables <span className="text-highlight-light">Mouse Wheel Down</span> as a valid trigger for sprint toggling, a feature natively blocked by the RoR2 input manager.</>
+    },
+    {
+        title: <><span className="text-highlight">Logic Injection:</span></>, 
+        desc: <>Injects custom boolean flags into the <span className="text-highlight-light">FixedUpdate</span> loop to ensure external inputs are synchronized with the game's physics engine.</>
+    }
+]}
+/>
+
+## Technical Implementation
+
+The project utilizes **BepInEx** for assembly patching and **MonoMod** (via `On.RoR2`) to hook into the game’s internal classes. 
+
+A significant challenge was the disparity between Unity's `Update()` (input polling) and the game's `FixedUpdate()` (physics/state processing). To prevent dropped inputs, the mod implements a **state-latching pattern**: 
+
+1. **Update()**: Continuously polls `Input.mouseScrollDelta` and `UnityInput`.
+2. **Flagging**: If a valid input is detected, a `_keyPressedThisFrame` flag is raised.
+3. **FixedUpdate()**: The hook intercepts `PlayerCharacterMasterController`, checks the flag, and manually sets `sprintInputPressReceived = true` before the game processes the frame.
+
+
+<TechStack items={[
+  { label: "Framework", val: "BepInEx / MonoMod" },
+  { label: "Language", val: "C# / .NET" },
+  { label: "Engine", val: "Unity 2019.4" },
+  { label: "Settings API", val: "Risk of Options" }
+]} />
+
+## Key Outcomes
+
+<OutcomeList items={[
+  { title: "Bypassing Engine Limits", desc: "Successfully implemented a secondary input listener that operates outside of the native Rewired input manager." },
+  { title: "Improved Accessibility", desc: "Provided a solution for players with ergonomic constraints by allowing high-frequency inputs to be mapped to the scroll wheel." },
+  { title: "Seamless Integration", desc: "Leveraged the 'Risk of Options' API to provide a native-feeling UI, allowing users to configure binds without restarting the game." }
+]} />
+
+## Challenges & Solutions
+
+<ChallengeCard items={[
+    {
+      prob: "Input Desync",
+      desc: "Polling input directly in the FixedUpdate hook resulted in 'dropped' inputs because mouse-scroll ticks are often faster than the physics clock.",
+      sol: "Implemented a 'Latching' system where Update() catches the input and FixedUpdate() consumes it, ensuring 100% reliability for high-frequency actions."
+    },
+    {
+      prob: "UI Focus Interference",
+      desc: "Custom inputs would trigger even while the player was in the pause menu or typing in chat.",
+      sol: "Added conditional checks for 'isUIFocused' and 'networkUser' status to ensure input injection only occurs during active gameplay."
+    }
+]}
+/>
+
+## Future Work
+
+<FutureWork items={[
+  { title: "Universal Binding Wrapper", desc: "Generalizing the injection logic into a reusable library for other RoR2 actions like Equipment use or Interactive pings." },
+  { title: "Macro Protection", desc: "Adding optional 'fair play' software debouncing to prevent accidental infinite loops when using high-DPI infinite scroll wheels." }
+]} />

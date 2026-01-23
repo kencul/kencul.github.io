@@ -1,0 +1,101 @@
+---
+title: "VR Laser Synth"
+subtitle: "Expressive VR Performance Instrument"
+github: "https://github.com/kencul/VRLaserSynth"
+videoEmbed: "https://www.youtube.com/embed/EI8uzHKBp7k?si=nnPcKFFYekEy6jep"
+description: "A Virtual Reality instrument developed for intentional performance. By utilizing spatial tracking in a 3D environment, the instrument allows performers to manipulate pitch, timbre, and complex modulation through physical hand gestures, bridging human movement with digital audio."
+tech: "Unity, Csound, C#"
+tags: ["VR/AR", "Audio", "Csound", "Unity"]
+demo: "/projects/laser-synth/demo.gif"
+date: "2024-09-12"
+pdf: "/projects/laser-synth/Ken_Kobayashi_Laser_Synth_ICSC2024.pdf"
+externalLink: 
+- {text: "Official Proceedings (DOI)", url: "https://doi.org/10.21939/icsc2024"}
+---
+
+## Overview
+
+Modern sound synthesis offers infinite sonic possibilities, yet digital instruments often lack the physical expressiveness of their acoustic counterparts. The <span className="text-highlight-light">Laser Synth</span> is a Virtual Reality (VR) instrument developed as my Bachelor's capstone project and presented at the **ICSC 2024 Csound Conference**.
+
+Unlike VR installations that rely on generative randomness, the Laser Synth is designed for intentional, traditional performance. Through spatial tracking, it creates an interactable interface that bridges human movement with the infinite possibilities of digital audio in a live performance context.
+
+## Instrument Control & Design
+
+The instrument architecture revolves around three objects: a stationary central crystal and two hand-held orbs. The lasers which connect these objects represent the geometric relationship that drives the synthesis engine.
+
+<TwoSmCards items={[
+    {
+        title: <><span className="text-highlight">Pitch & Filter:</span></>, 
+        desc: <>The distance between the <span className="text-highlight-light">Crystal and right orb</span> controls pitch (quantized to 12-TET), while the distance between the <span className="text-highlight-light">Two Orbs</span> modulates the filter cutoff frequency.</>
+    },
+    {
+        title: <><span className="text-highlight">XY-Pad Rotation:</span></>, 
+        desc: <> The <span className="text-highlight-light">left orb rotation</span> functions as a 3D XY-pad, allowing for simultaneous manipulation of parameters like vibrato, reverb, and distortion.</>
+    }
+]}
+/>
+
+<ProjectImage 
+  src="/projects/laser-synth/LaserSynthImg1.webp" 
+  alt="Laser Synth UI Elements" 
+  caption="Crystal and two held orbs, with the interface displaying real-time tuner and XY-pad mapping."
+  width={900}
+/>
+
+## Technical Implementation
+
+The Laser Synth leverages the <URL text = "CsoundUnity" url = "https://github.com/rorywalsh/CsoundUnity"/> package to run <span className="text-highlight-light">Csound</span> within <span className="text-highlight-light">Unity</span>. This decoupling allows Unity to focus on spatial logic and visual feedback while Csound handles precise sound synthesis. 
+
+The Csound code was prototyped in <URL text="Cabbage" url="https://cabbageaudio.com/"/>, and tactile VR interactions were implemented using the <span className="text-highlight-light">Auto Hand VR</span> physics system.
+
+<ProjectImage 
+  src="/projects/laser-synth/Implementation.webp" 
+  alt="Laser Synth Architecture" 
+  caption="Tool Architecture and Data Flow"
+  width={850}
+/>
+
+<TechStack items={[
+  { label: "Engine", val: "Unity / VR" },
+  { label: "Audio Engine", val: "Csound" },
+  { label: "Bridge", val: "CsoundUnity" },
+  { label: "Key Tools", val: "Cabbage / Auto Hand" }
+]} />
+
+## Key Outcomes
+
+<OutcomeList items={[
+  { title: "Natural Interaction", desc: "Proved that spatial distances in VR provide more intuitive 'theremin-like' control than traditional knobs and sliders." },
+  { title: "Visual Reinforcement", desc: "Developed a HUD including a 3D chromatic tuner and dynamic laser color-coding for informative live performance feedback." },
+  { title: "Academic Recognition", desc: "Successfully presented at the International Csound Conference (ICSC) 2024, highlighting the intersection of VR and professional-grade synthesis." }
+]} />
+
+## Challenges & Solutions
+
+<ChallengeCard items={[
+    {
+      prob: "3D Pitch Accuracy",
+      desc: "Performing melodies in invisible 3D space is difficult without haptic feedback or 'frets' to guide the hand.",
+      sol: "Implemented a 12-tone equal temperament quantization engine within the pipeline to provide a margin of error for the performer."
+    },
+    {
+      prob: "Sound Design Testing",
+      desc: "Iterating on Csound code required constant removal of the VR headset, which was cumbersome during development.",
+      sol: "Introduced in-VR dropdowns and sliders to adjust 10 key synthesis parameters in real-time without leaving the environment."
+    }
+]}
+/>
+
+<ProjectImage 
+  src="/projects/laser-synth/LaserSynthSliders.webp" 
+  alt="In-VR Sliders" 
+  caption="Sliders to adjust 10 parameters within VR"
+  width={900}
+/>
+
+## Future Work
+
+<FutureWork items={[
+  { title: "Scalable Polyphony", desc: "Transitioning from monophonic to polyphonic synthesis by manifesting multiple resonant crystals as independent audio voices." },
+  { title: "Expanded Preset Architecture", desc: "Creating a comprehensive preset ecosystem to provide high-quality 'out-of-the-box' configurations and allow performers to toggle between user created states." }
+]} />

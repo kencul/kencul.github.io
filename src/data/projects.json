@@ -1,0 +1,48 @@
+
+{
+    "skills": [
+        { "category": "Languages", "items": "Python, JavaScript, C/C++, HTML/CSS" },
+        { "category": "AI/ML", "items": "Locally Hosted LLMs, YOLO" },
+        { "category": "Cloud & DevOps", "items": "AWS Certified, Serverless, Git" },
+        { "category": "Creative Systems", "items": "Csound, Wwise, Unity, Unreal, Max/MSP" }
+    ],
+    "projects": [
+        {
+            "slug": "laser-synth",
+            "title": "VR Laser Synth",
+            "subtitle": "Virtual Reality Gesture Mapping & Real-time DSP",
+            "link": "/projects/laser-synth/",
+            "github": "https://github.com/kencul/VRLaserSynth",
+            "description": "An immersive VR performance interface that translates controller data into the Csound audio engine. Built using a custom bridge between Unity and Csound, the system maps real-time spatial coordinates and rotation data to synthesizer parameters, allowing for expressive, gesture-based digital audio performance",
+            "tech": "Unity, C#, Csound",
+            "tags": ["Unity", "Audio", "Csound"],
+            "demo": "/projects/laser-synth/demo.gif",
+            "date": "2024-09-12"
+        },
+        {
+            "slug": "sprint-double-bind",
+            "title": "Risk of Rain 2 Mod - Sprint Double Bind",
+            "subtitle": "Runtime Assembly Hooking & Input Logic Injection",
+            "link": "/projects/sprint-double-bind/",
+            "github": "https://github.com/kencul/SprintDoubleBind",
+            "description": "A C# utility that extends the input capabilities of Risk of Rain 2 by bypassing the game's internal 1-to-1 keybinding constraints. By injecting custom listeners into the game’s core update loop, the mod enables asynchronous input polling for mouse-wheel and redundant key-mappings. This project focuses on improving player UX and accessibility, providing a solution for complex control schemes not supported by the native engine configuration.",
+            "tech": "Unity, C#, BepInEx",
+            "tags": ["Unity", "GameDev"],
+            "demo": "/projects/sprint-double-bind/thumbnail.webp",
+            "date": "2025-12-28"
+        },
+        {
+            "slug": "video-csound",
+            "title": "VideoCsound",
+            "subtitle": "MSc Thesis: Generating Music from Video with Computer Vision",
+            "link": "/projects/video-csound/",
+            "github": "https://github.com/kencul/videoCsound",
+            "videoEmbed": "https://www.youtube.com/embed/zbPA626amCo?si=fluW72aujhdFnRXl",
+            "description": "An open-source performance system that bridges computer vision and algorithmic composition to transform real-time visual input into synchronized, generative audio. Utilizing the YOLO11 object detection model and Csound audio engine, the system leverages high-level semantic data, such as object position and scale, to create an intuitive, marker-less musical interface.",
+            "tech": "Python, YOLO11, Csound, OpenCV",
+            "tags": ["AI/ML", "Audio", "Python", "Csound"],
+            "demo": "/projects/video-csound/thumbnail.webp",
+            "date": "2025-08-31"
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f000f;
+  --foreground: #ffffff;
+}
+
+@theme {
+  /* maps colors to Tailwind utilities like bg-background */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* allows use of font-prompt and font-edu in HTML */
+  --font-prompt: var(--font-prompt);
+  --font-edu: var(--font-edu);
+
+  /* defining colors */
+  --color-highlight: var(--color-purple-400);
+  --color-highlight-bold: var(--color-purple-950);
+  --color-highlight-light: var(--color-purple-300);
+}
+
+@layer base {
+  body {
+    /* use variable with backup fonts */
+    font-family: var(--font-prompt), ui-sans-serif, sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased;
+  }
+}
+
+/* Use your theme variable here instead of the hardcoded font name */
+.logoName {
+  font-family: var(--font-edu), cursive;
+  font-style: italic;
+}
+
+/* Updated active tag using @apply */
+.tag-active {
+  @apply bg-purple-500 text-white border-purple-500;
+}
+
+/* Modern Aspect Ratio handling (Replaces the responsive-iframe-container hack) */
+.responsive-iframe-container {
+  @apply aspect-video w-full mt-4 overflow-hidden relative;
+}
+
+.responsive-iframe-container iframe {
+  @apply absolute top-0 left-0 w-full h-full;
+}
+
+.soundcloud-embed {
+  @apply mt-4;
+}
