@@ -1,9 +1,10 @@
 // track card for music page
 // takes data from music.json and displays it
 import Card from "@/components/ui/card";
+import LiteVideo from "@/components/ui/LiteVideo";
 
 export default function TrackCard({ track }) {
-    const { title, artist, description, featured, type, source } = track;
+    const { title, artist, description, featured, type, source, ytID } = track;
 
     const styles = {
       card: `
@@ -15,7 +16,7 @@ export default function TrackCard({ track }) {
       title: `font-bold text-white mb-1 ${featured ? "text-3xl md:text-4xl" : "text-2xl"}`,
       artist: "text-lg font-light italic text-highlight mb-1",
       description: "text-gray-300 mb-6",
-      mediaWrapper: "my-auto overflow-hidden"
+      mediaWrapper: "my-auto overflow-hidden",
     };
   
     return (
@@ -32,13 +33,14 @@ export default function TrackCard({ track }) {
           )}
   
           {type === "youtube" && (
-            <div className="aspect-video">
-              <iframe className="w-full h-full" src={source} allowFullScreen />
-            </div>
+            <LiteVideo className = "aspect-video" id={ytID} title={`${styles.title} Music Video`}/>
+            // <div className="aspect-video">
+            //   <iframe className="w-full h-full" title={`${styles.title} Music Video`}src={source} allowFullScreen />
+            // </div>
           )}
   
           {type === "soundcloud" && (
-            <iframe width="100%" height="100%" src={`${source}&color=%239950d8&hide_related=true`} />
+            <iframe width="100%" height="100%" title={`${styles.title} Soundcloud Player`} loading="lazy" src={`${source}&color=%239950d8&hide_related=true`} />
           )}
         </div>
       </Card>

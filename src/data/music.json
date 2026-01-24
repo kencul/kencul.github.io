@@ -22,7 +22,8 @@
       "artist": "ken ft. Hatsune Miku",
       "description": "A farewell lovesong, my attempt at a bittersweet ballad.",
       "type": "youtube",
-      "source": "https://www.youtube.com/embed/PO_y94pqrHY"
+      "source": "https://www.youtube.com/embed/PO_y94pqrHY",
+      "ytID": "PO_y94pqrHY"
     },
     {
       "id": "loona",
@@ -38,7 +39,7 @@
         "artist": "ken ft. Hatsune Miku",
         "description": "My first track, featuring the vocaloid singer, Hatsune Miku.",
         "type": "youtube",
-        "source": "https://www.youtube.com/embed/jtR-VZRXP48"
+        "ytID": "jtR-VZRXP48"
     },
     {
         "id": "out-of-love",
@@ -46,6 +47,7 @@
         "artist": "ken ft. Hatsune Miku",  
         "description": "A revisit to Miku, learning the depths and details of vocaloid synthesis.",
         "type": "youtube",
-        "source": "https://www.youtube.com/embed/XRA3QPuZ6zw"
+        "source": "https://www.youtube.com/embed/XRA3QPuZ6zw",
+        "ytID": "XRA3QPuZ6zw"
     }
   ]

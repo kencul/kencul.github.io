@@ -62,9 +62,9 @@ export default function FilteredProjects({ projects }) {
           <div className="p-6 flex flex-col justify-between grow">
             <div>
               <div className="flex justify-between items-start">
-                <h3 className="text-2xl font-bold text-white group-hover:text-highlight transition-colors">
+                <h2 className="text-2xl font-bold text-white group-hover:text-highlight transition-colors">
                   {project.title}
-                </h3>
+                </h2>
                 <span className="text-[10px] text-gray-500 font-mono mt-1 uppercase tracking-widest">
                   {new Date(project.date).toLocaleDateString('en-US', {year: 'numeric', month: 'short'})}
                 </span>

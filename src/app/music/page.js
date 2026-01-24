@@ -2,11 +2,21 @@ import musicData from '@/data/music.json';
 import TrackCard from '@/components/TrackCard';
 
 export async function generateMetadata() {
-    return {
-      title: `Music`,
-      description: "Showcase of music by Ken Kobayashi"
-    };
+  return {
+    title: `Music`,
+    description: "Showcase of music by Ken Kobayashi",
+    alternates: {
+      canonical: "/music",
+    },
+    other: {
+      rel: "preconnect",
+      url: [
+        "https://w.soundcloud.com",
+        "https://api-widget.soundcloud.com"
+      ],
+    },
   }
+}
 
 export default function MusicPage() {
     return (

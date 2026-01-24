@@ -16,19 +16,23 @@ const eduTas = Edu_TAS_Beginner({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://kenmusic.net"),
   title: {
-    default: "Ken Kobayashi",
+    default: "Ken Kobayashi | Sound Engineer & Audio Developer",
     template: "%s | Ken Kobayashi", // This adds your name to every page title automatically
   },
-  description: "Portfolio of Ken Kobayashi, sound enginner and audio developer",
+  description: "Ken Kobayashi is a Sound Engineer and Audio Developer specializing in game audio architecture, C# runtime hooking, and DSP. Bridging the gap between creative sound design and technical implementation.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Ken Kobayashi",
+    title: "Ken Kobayashi | Sound Engineer & Audio Developer",
     description: "Exploring the intersection of sound and code.",
     url: "https://kenmusic.net",
     siteName: "Ken Kobayashi",
     images: [
       {
-        url: "/images/photos/og-img.png",
+        url: "/images/photos/og-img.webp",
         width: 1200,
         height: 630,
         alt: "Portfolio Preview",
@@ -36,7 +40,16 @@ export const metadata = {
     ],
     locale: "en_US",
     type: "website",
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ken Kobayashi | Sound Engineer & Audio Developer",
+    description: "Exploring the intersection of sound and code.",
+    images: ["/images/photos/og-img.webp"],
+  },
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 
