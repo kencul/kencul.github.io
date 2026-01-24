@@ -26,7 +26,7 @@ export const mdxComponents = {
   ),
 
   TechStack: ({ items }) => (
-    <Card className="grid grid-cols-2 md:grid-cols-4 gap-4 w-fit mx-auto">
+    <Card className="grid grid-cols-2 md:grid-cols-4 gap-4 w-fit mx-auto my-8">
       {items.map(item => (
         <div key={item.label}>
           <span className="text-highlight font-bold block uppercase mb-2 text-sm">{item.label}</span>
@@ -53,25 +53,25 @@ export const mdxComponents = {
     </div>
   ),
 
-    OutcomeList: ({ items }) => (
-    <div className="grid gap-4 w-fit mx-auto">
-      {items.map((item, i) => (
-        <Card key={i} className="flex items-start gap-6 py-6 ">
-          {/* automatic numbering based on index */}
-          <span className="text-highlight text-2xl">
-            {(i + 1).toString().padStart(2, '0')}
-          </span>
-          <div>
-            <h4 className="text-highlight-light font-bold text-lg mb-1">
-              {item.title}
-            </h4>
-            <p className="text-sm">
-              {item.desc}
-            </p>
-          </div>
-        </Card>
-      ))}
-    </div>
+  OutcomeList: ({ items }) => (
+  <div className="grid gap-4 w-fit mx-auto my-6">
+    {items.map((item, i) => (
+      <Card key={i} className="flex items-start gap-6 py-6 ">
+        {/* automatic numbering based on index */}
+        <span className="text-highlight text-2xl">
+          {(i + 1).toString().padStart(2, '0')}
+        </span>
+        <div>
+          <h4 className="text-highlight-light font-bold text-lg mb-1">
+            {item.title}
+          </h4>
+          <p className="text-sm">
+            {item.desc}
+          </p>
+        </div>
+      </Card>
+    ))}
+  </div>
   ),
 
   FutureWork: ({ items }) => (
@@ -107,4 +107,45 @@ export const mdxComponents = {
       {text} 
     </Link>
   ),
+
+  H: ({ children }) => (
+    <span className="text-highlight-light">{children}</span>
+  ),
+
+  code: ({ children }) => (
+    <code className="
+      relative 
+      rounded 
+      bg-[#2a2a2a]
+      px-[0.3rem] 
+      py-[0.1rem] 
+      text-highlight-light
+      border 
+      border-white/10 
+    ">
+      {children}
+    </code>
+  ),
+  // ol: ({ children }) => (
+  //     <ol className="
+  //     list-decimal 
+  //     list-inside
+  //     marker:text-highlight 
+  //     marker:text-3xl 
+  //     marker:font-extrabold">
+  //     {children}
+  //   </ol>
+  // ),
+  // // Styles the <ul> tag
+  // ul: ({ children }) => (
+  //   <ul className="list-disc list-inside text-highlight-light">
+  //     {children}
+  //   </ul>
+  // ),
+  // // Styles the <li> tag
+  // li: ({ children }) => (
+  //   <li className="text-gray-100 leading-relaxed text-xl mb-4 ">
+  //     {children}
+  //   </li>
+  // ),
 };
