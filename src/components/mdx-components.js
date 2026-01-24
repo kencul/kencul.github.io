@@ -26,7 +26,7 @@ export const mdxComponents = {
   ),
 
   TechStack: ({ items }) => (
-    <Card className="grid grid-cols-2 md:grid-cols-4 gap-4 w-fit mx-auto">
+    <Card className="grid grid-cols-2 md:grid-cols-4 gap-4 w-fit mx-auto my-8">
       {items.map(item => (
         <div key={item.label}>
           <span className="text-highlight font-bold block uppercase mb-2 text-sm">{item.label}</span>
@@ -107,4 +107,45 @@ export const mdxComponents = {
       {text} 
     </Link>
   ),
+
+  H: ({ children }) => (
+    <span className="text-highlight-light">{children}</span>
+  ),
+
+  code: ({ children }) => (
+    <code className="
+      relative 
+      rounded 
+      bg-[#2a2a2a]
+      px-[0.3rem] 
+      py-[0.1rem] 
+      text-highlight-light
+      border 
+      border-white/10 
+    ">
+      {children}
+    </code>
+  ),
+  // ol: ({ children }) => (
+  //     <ol className="
+  //     list-decimal 
+  //     list-inside
+  //     marker:text-highlight 
+  //     marker:text-3xl 
+  //     marker:font-extrabold">
+  //     {children}
+  //   </ol>
+  // ),
+  // // Styles the <ul> tag
+  // ul: ({ children }) => (
+  //   <ul className="list-disc list-inside text-highlight-light">
+  //     {children}
+  //   </ul>
+  // ),
+  // // Styles the <li> tag
+  // li: ({ children }) => (
+  //   <li className="text-gray-100 leading-relaxed text-xl mb-4 ">
+  //     {children}
+  //   </li>
+  // ),
 };
