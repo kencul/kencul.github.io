@@ -107,6 +107,4 @@ export const mdxComponents = {
       {text} 
     </Link>
   ),
-
-  YouTube: (props) => <LiteVideo {...props} />,
 };
