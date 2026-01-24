@@ -53,25 +53,25 @@ export const mdxComponents = {
     </div>
   ),
 
-    OutcomeList: ({ items }) => (
-    <div className="grid gap-4 w-fit mx-auto">
-      {items.map((item, i) => (
-        <Card key={i} className="flex items-start gap-6 py-6 ">
-          {/* automatic numbering based on index */}
-          <span className="text-highlight text-2xl">
-            {(i + 1).toString().padStart(2, '0')}
-          </span>
-          <div>
-            <h4 className="text-highlight-light font-bold text-lg mb-1">
-              {item.title}
-            </h4>
-            <p className="text-sm">
-              {item.desc}
-            </p>
-          </div>
-        </Card>
-      ))}
-    </div>
+  OutcomeList: ({ items }) => (
+  <div className="grid gap-4 w-fit mx-auto my-6">
+    {items.map((item, i) => (
+      <Card key={i} className="flex items-start gap-6 py-6 ">
+        {/* automatic numbering based on index */}
+        <span className="text-highlight text-2xl">
+          {(i + 1).toString().padStart(2, '0')}
+        </span>
+        <div>
+          <h4 className="text-highlight-light font-bold text-lg mb-1">
+            {item.title}
+          </h4>
+          <p className="text-sm">
+            {item.desc}
+          </p>
+        </div>
+      </Card>
+    ))}
+  </div>
   ),
 
   FutureWork: ({ items }) => (
