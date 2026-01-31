@@ -5,7 +5,7 @@
         "artist": "ken",
         "description": "A track using sounds from the Csound Catalog, a CD-ROM made by Dr. Boulanger in 2000 containing pieces of audio made in the Csound language. These audio files were sampled, and simple tape effects were applied for the piece. This track was made for a class competition for Dr. Boulanger's electroacoustic composition class in my time at Berklee.",
         "type": "audio",
-        "source": "/audio/ruin.wav",
+        "source": "/audio/ruin.mp3",
         "featured": true
     },
     {
@@ -14,7 +14,7 @@
         "artist": "ken ft. KAFU",
         "description": "A trap inspired electronic pop song using singing synthesizer, KAFU.",
         "type":"audio",
-        "source": "/audio/messLeftBehind.wav"
+        "source": "/audio/messLeftBehind.mp3"
     },
     {
       "id": "candy",

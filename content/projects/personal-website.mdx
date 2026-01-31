@@ -1,0 +1,92 @@
+---
+
+title: "kenmusic.net" 
+subtitle: "Architectural Migration & Performance Optimization of My Website" 
+github: "https://github.com/kencul/kencul.github.io" 
+description: "A technical overhaul of a 4-year old portfolio website. This project documents the migration from a monolithic legacy HTML structure to a modern Next.js environment. Key focuses included decoupling content from logic via MDX, implementing SEO strategies, and optimizing the critical rendering path to achieve high-performance scores on media-heavy pages." 
+tech: "Next.js, Tailwind CSS, MDX, Vercel" 
+tags: ["WebDev"] 
+demo: "/projects/personal-website/thumbnail.webp" 
+date: "2026-01-25"
+---
+
+## Overview
+
+This website started 3 years ago as a simple exercise in <span className="text-highlight-light">Raw HTML & CSS</span> as a final project for a introductory coding class. As my programming portfolio has grown over the years, I needed a convenient and professional medium to showcase my work. This website you see now is the result.
+
+The primary challenge was implementing a program portfolio page. Creating HTML sites for each project was a daunting task I did not want to endure. This website, instead, streamlines the process of creating <span className="text-highlight-light">Case Study</span> pages, one of which you are reading now.
+
+## Evolution of Structure
+
+<TwoSmCards items={[
+{
+title: <><H>Before: The Monolith</H></>,
+desc: <>Raw HTML/CSS hosted on <H>AWS Amplify</H>. Every new page and project required manually creating HTML and adjusting CSS.</>
+},
+{
+title: <><H>After: The Modernization</H></>,
+desc: <>Migration to <H>Tailwind CSS</H> and <H>MDX based page generation</H>. Decoupled styling from structure and automated page generation from easy to edit files.</>
+}
+]}
+/>
+
+## Technical Implementation
+
+This version of the website is a total restructure into <H>Next.js</H>, focusing on the "Content-as-Data" philosophy.
+
+Instead of creating a new `.js` file for every project, I implemented a dynamic approach using <H>MDX</H>. This file type allows me to write technical documentation in Markdown while injecting complex React components like text cards, audio players, and performance optimized video embeds.
+
+The process of adding a project onto my portfolio is as follows:
+
+<OutcomeList items={[
+{ title: "Add a MDX file", desc: <>Each MDX file is pre-rendered into static HTML at build time by <H>Next.js</H>.</> },
+{ title: "Enter Metadata", desc: <>Metadata for the project is configured in YAML in the header of the MDX file. A metadata parser extracts project information to display on the website.</> },
+{ title: "Write Content", desc: <>The content of the case study is written in Markdown with <H>React components</H>, including a shared library of custom UI components which keep styling between pages consistent.</> }
+]} />
+
+<TechStack items={[
+{ label: "Framework", val: "Next.js" },
+{ label: "Styling", val: "Tailwind CSS" },
+{ label: "Content", val: "MDX" },
+{ label: "Deployment", val: "Vercel" }
+]} />
+
+## SEO Optimization
+
+To maintain a high Lighthouse score, countless optimizations were made. I moved away from "Eager Loading" toward a <H>Facade Pattern</H>.
+
+<ChallengeCard items={[
+{
+prob: "Third-Party Script Bloat",
+desc: "Standard YouTube iframes were adding 1MB+ of blocking JavaScript, tanking load times.",
+sol: "Implemented facades so only lightweight previews are loaded initially. The heavy player scripts are loaded upon user interaction."
+},
+{
+prob: "Large File Sizes",
+desc:"High quality images, animations, fonts, and audio files made payload sizes large.",
+sol: <>Compressing assets to smaller sizes such as <H>webp</H> and <H>mp3</H>, and minimizing asset usage through YouTube embeds and Tailwind optimizations.</>
+},
+{
+prob: "Lack of Metadata",
+desc: "The original website mostly ignored metadata, lowering SEO visibility.",
+sol: <>Implemented dynamic metadata for each page through <code>generateMetadata</code> function, adding page titles, canonical URLs, and rich link previews through OpenGraph.</>
+}
+]}
+/>
+
+
+## Key Outcomes
+
+<OutcomeList items={[
+{ title: "Restructured Website", desc: <>Converted my original HTML and CSS website into a <H>Next.js</H> project with <H>Tailwind CSS</H>.</> },
+{ title: "100% Static Delivery", desc: "All case studies are pre-built, resulting in near-instant page transitions and zero server-side latency." },
+{ title: "Optimized Load Times", desc: "Transitioned from high-bitrate WAV files to 320kbps MP3s for the web player, reducing initial load size by 85%." },
+{ title: "Easy to Update Project Portfolio", desc: "Added a project portfolio page that showcases my work and can easily be updated for new projects."}
+]} />
+
+## Future Work
+
+<FutureWork items={[
+{ title: "Revamped Visual Style", desc: "Convert website to a brighter, simple design, inspired by a brutalist style." },
+{ title: "Simplification of Source Code", desc: "Cleaning up source code to rid of unnecessary data and make code more readable." }
+]} />
