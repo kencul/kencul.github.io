@@ -4,7 +4,7 @@ import TrackCard from '@/components/TrackCard';
 export async function generateMetadata() {
   return {
     title: `Music`,
-    description: "Showcase of music by Ken Kobayashi",
+    description: "A showcase of music by Ken Kobayashi, a collection of electronic and Vocaloid music.",
     alternates: {
       canonical: "/music",
     },
