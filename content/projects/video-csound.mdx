@@ -15,13 +15,13 @@ ytID: "zbPA626amCo"
 
 Traditional acoustic instruments offer a natural, symbiotic relationship between physical action and sonic response. In contrast, laptop-based electronic music often lacks this visual expressiveness, making it difficult for an audience to interpret the relationship between a performer's actions and the resulting sound.
 
-<span className="text-highlight-light">VideoCsound</span> is an open-source performance system designed to bridge this gap. Through computer vision, it tracks everyday objects and translates their high-level semantic data into real-time synthesis parameters.
+<H>VideoCsound</H> is an open-source performance system designed to bridge this gap. Through computer vision, it tracks everyday objects and translates their high-level semantic data into real-time synthesis parameters.
 
 ## Technical Implementation
 
-<span className="text-highlight-light">VideoCsound</span> utilizes a modular Python pipeline to synchronize high-speed object detection with real-time audio synthesis. <span className="text-highlight-light"> OpenCV</span> handles the video stream, while <span className="text-highlight-light">Ultralytics YOLO</span> extracts bounding box coordinates and unique track IDs.
+<H>VideoCsound</H> utilizes a modular Python pipeline to synchronize high-speed object detection with real-time audio synthesis. <H> OpenCV</H> handles the video stream, while <H>Ultralytics YOLO</H> extracts bounding box coordinates and unique track IDs.
 
-These data points are fed into the <span className="text-highlight-light">Csound Python API (ctcsound)</span>, which modulates synthesis parameters in real-time. Through <span className="text-highlight-light">OpenCV</span>, the processed video is rendered with an overlay of the detected object boundaries, providing the performer with immediate visual feedback of the tracking state.
+These data points are fed into the <H>Csound Python API (ctcsound)</H>, which modulates synthesis parameters in real-time. Through <H>OpenCV</H>, the processed video is rendered with an overlay of the detected object boundaries, providing the performer with immediate visual feedback of the tracking state.
 
 <ProjectImage 
   src="/projects/video-csound/videoCsoundDataFlowInverted.webp" 
@@ -30,13 +30,12 @@ These data points are fed into the <span className="text-highlight-light">Csound
   width="900"
 />
 
-To decouple the CV engine from creative assets, the system employs a <span className="text-highlight-light">template-based project structure</span>. Initializing a performance generates a standardized directory with YAML configurations and boilerplate Csound orchestra (.orc) files. This allows users to define complex object-to-audio mappings, detection thresholds, and bus names in a centralized location without modifying the underlying Python source code. Consolidating project files into a single folder also allows for easy sharing and organization of different setups.
+To decouple the CV engine from creative assets, the system employs a <H>template-based project structure</H>. Initializing a performance generates a standardized directory with YAML configurations and boilerplate Csound orchestra (.orc) files. This allows users to define complex object-to-audio mappings, detection thresholds, and bus names in a centralized location without modifying the underlying Python source code. Consolidating project files into a single folder also allows for easy sharing and organization of different setups.
 
 <TechStack items={[
   { label: "Language", val: "Python / Csound" },
   { label: "Libraries", val: "Ultralytics / OpenCV" },
-  { label: "Model", val: "YOLO11n / COCO" },
-  { label: "Data", val: "YAML / NumPy" }
+  { label: "Model", val: "YOLO11n / COCO" }
 ]} />
 
 ## Key Outcomes
@@ -67,7 +66,7 @@ To decouple the CV engine from creative assets, the system employs a <span class
 ## Future Work
 
 <FutureWork items={[
-  { title: "GUI Development", desc: <>Transitioning from a CLI to a desktop application using <span className="text-highlight-light">Tkinter</span> or <span className="text-highlight-light">PySide</span> to make the framework accessible to non-technical musicians.</> },
+  { title: "GUI Development", desc: <>Transitioning from a CLI to a desktop application using <H>Tkinter</H> or <H>PySide</H> to make the framework accessible to non-technical musicians.</> },
   { title: "Nuanced Parameter Mapping", desc: "Extracting velocity and acceleration data from the CV model to map physical energy to sonic intensity, rather than just position." },
   { title: "Expanded Applications", desc: "Exploring kinesthetic feedback for physical therapy and spatial audio alerts for industrial safety systems." }
 ]} />
