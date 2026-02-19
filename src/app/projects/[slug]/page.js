@@ -105,7 +105,15 @@ export default async function ProjectPage({ params }) {
       <LiteVideo className="max-w-4xl mb-12" id={meta.ytID} title={meta.title}/>
       )}
 
-      <MDXRemote source={content} components={mdxComponents} />
+      <MDXRemote 
+        source={content} 
+        components={mdxComponents} 
+        options={{
+          parseFrontmatter: true,
+          blockJS: false,
+          blockDangerousJS: true
+        }}
+      />
       
     </article>
   );

@@ -5,7 +5,7 @@ import Link from "next/link";
 // Configure Prompt
 const prompt = Prompt({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  weight: ["400", "600", "700", "900"],
   variable: "--font-prompt",
 });
 
@@ -19,7 +19,7 @@ export const metadata = {
   metadataBase: new URL("https://kenmusic.net"),
   title: {
     default: "Ken Kobayashi | Sound Engineer & Audio Developer",
-    template: "%s | Ken Kobayashi", // This adds your name to every page title automatically
+    template: "%s | Ken Kobayashi",
   },
   description: "Ken Kobayashi is a Sound Engineer and Audio Developer specializing in game audio architecture, C# runtime hooking, and DSP. Bridging the gap between creative sound design and technical implementation.",
   alternates: {
