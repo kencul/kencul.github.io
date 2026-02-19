@@ -10,6 +10,7 @@ export const ProjectSchema = z.object({
     demo: z.string(),
     github: z.url().nullable().or(z.literal("")).optional(),
     description: z.string().max(1000, "Description is too long for the list view").default(""),
+    tech: z.string().default(""),
     // Optional fields:
     ytID: z.string().optional(),
     pdf: z.string().optional(),

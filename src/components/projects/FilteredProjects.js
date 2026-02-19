@@ -39,7 +39,7 @@ export default function FilteredProjects({ projects }) {
       </div>
 
       {/* Project Rows */}
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
         {filteredProjects.map((project) => (
           <Card 
           key={project.title} 
@@ -81,13 +81,13 @@ export default function FilteredProjects({ projects }) {
                 ))}
               </div>
 
-              <p className="text-sm  line-clamp-3 md:line-clamp-4 leading-relaxed font-light">
+              <p className="text-sm  line-clamp-3 md:line-clamp-3 leading-relaxed font-light">
                 {project.description}
               </p>
             </div>
 
             {/* Bottom Actions */}
-            <div className="mt-6 flex flex-row justify-between items-center relative z-30">
+            <div className="mt-6 flex flex-row justify-between items-center relative">
               <div className="flex flex-col">
                 <span className="text-white/90 text-xs font-semibold underline decoration-purple-900/50 underline-offset-4 group-hover:text-highlight transition-colors">
                   Read Case Study &rarr;
@@ -101,7 +101,7 @@ export default function FilteredProjects({ projects }) {
                 href={project.github} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 bg-gray-800 hover:bg-highlight rounded-lg border border-gray-700 transition-all flex items-center gap-2 group/gh"
+                className="p-2 z-30 bg-gray-800 hover:bg-highlight rounded-lg border border-gray-700 transition-all flex items-center gap-2 group/gh"
               >
                 <span className="text-xs font-medium text-gray-400 group-hover/gh:text-white">GitHub</span>
                 <GithubIcon className="w-4 h-4 text-gray-500 group-hover/gh:text-white" />

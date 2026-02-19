@@ -15,7 +15,7 @@ ytID: "EI8uzHKBp7k"
 
 ## Overview
 
-Modern sound synthesis offers infinite sonic possibilities, yet digital instruments often lack the physical expressiveness of their acoustic counterparts. The <span className="text-highlight-light">Laser Synth</span> is a Virtual Reality (VR) instrument developed as my Bachelor's capstone project and presented at the **ICSC 2024 Csound Conference**.
+Modern sound synthesis offers infinite sonic possibilities, yet digital instruments often lack the physical expressiveness of their acoustic counterparts. The <H>Laser Synth</H> is a Virtual Reality (VR) instrument developed as my Bachelor's capstone project and presented at the <H>ICSC 2024 Csound Conference</H>.
 
 Unlike VR installations that rely on generative randomness, the Laser Synth is designed for intentional, traditional performance. Through spatial tracking, it creates an interactable interface that bridges human movement with the infinite possibilities of digital audio in a live performance context.
 
@@ -25,12 +25,12 @@ The instrument architecture revolves around three objects: a stationary central 
 
 <TwoSmCards items={[
     {
-        title: <><span className="text-highlight">Pitch & Filter:</span></>, 
-        desc: <>The distance between the <span className="text-highlight-light">Crystal and right orb</span> controls pitch (quantized to 12-TET), while the distance between the <span className="text-highlight-light">Two Orbs</span> modulates the filter cutoff frequency.</>
+        title: <><H>Pitch & Filter:</H></>, 
+        desc: <>The distance between the <H>Crystal and right orb</H> controls pitch (quantized to 12-TET), while the distance between the <H>Two Orbs</H> modulates the filter cutoff frequency.</>
     },
     {
-        title: <><span className="text-highlight">XY-Pad Rotation:</span></>, 
-        desc: <> The <span className="text-highlight-light">left orb rotation</span> functions as a 3D XY-pad, allowing for simultaneous manipulation of parameters like vibrato, reverb, and distortion.</>
+        title: <><H>XY-Pad Rotation:</H></>, 
+        desc: <> The <H>left orb rotation</H> functions as a 3D XY-pad, allowing for simultaneous manipulation of parameters like vibrato, reverb, and distortion.</>
     }
 ]}
 />
@@ -44,9 +44,9 @@ The instrument architecture revolves around three objects: a stationary central 
 
 ## Technical Implementation
 
-The Laser Synth leverages the <URL text = "CsoundUnity" url = "https://github.com/rorywalsh/CsoundUnity"/> package to run <span className="text-highlight-light">Csound</span> within <span className="text-highlight-light">Unity</span>. This decoupling allows Unity to focus on spatial logic and visual feedback while Csound handles precise sound synthesis. 
+The Laser Synth leverages the <URL text = "CsoundUnity" url = "https://github.com/rorywalsh/CsoundUnity"/> package to run <H>Csound</H> within <H>Unity</H>. This decoupling allows Unity to focus on spatial logic and visual feedback while Csound handles precise sound synthesis. 
 
-The Csound code was prototyped in <URL text="Cabbage" url="https://cabbageaudio.com/"/>, and tactile VR interactions were implemented using the <span className="text-highlight-light">Auto Hand VR</span> physics system.
+The Csound code was prototyped in <URL text="Cabbage" url="https://cabbageaudio.com/"/>, and tactile VR interactions were implemented using the <H>Auto Hand VR</H> physics system.
 
 <ProjectImage 
   src="/projects/laser-synth/Implementation.webp" 
@@ -58,7 +58,6 @@ The Csound code was prototyped in <URL text="Cabbage" url="https://cabbageaudio.
 <TechStack items={[
   { label: "Engine", val: "Unity / VR" },
   { label: "Audio Engine", val: "Csound" },
-  { label: "Bridge", val: "CsoundUnity" },
   { label: "Key Tools", val: "Cabbage / Auto Hand" }
 ]} />
 

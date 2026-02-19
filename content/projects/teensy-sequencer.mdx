@@ -1,0 +1,68 @@
+---
+title: "Teensy Sequencer"
+subtitle: "Embedded Logic Under Hardware Constraints"
+github: "https://github.com/kencul/teensysequencer"
+description: "My first embedded audio project, built while out of town with a minimal parts kit. This 6-track sequencer uses DIY capacitive touch pads and a modal 'Override' system to bypass the limitations of a single breadboard and a lack of physical switches."
+tech: "Teensy 4.0, C++, Hardware"
+tags: ["Audio", "Embedded", "C++"]
+demo: "/projects/teensy-sequencer/thumbnail.webp"
+date: "2025-07-01"
+ytID: "NMFOZcyjoYA"
+---
+
+## Overview
+
+The <H>Teensy Sequencer</H> began as my first venture into embedded audio development. As this was my first big embedded project, I wanted to create something that would not be overwhelming, but still capable of producing a decent and presentable result that would be fun to share.
+
+I chose to build a sequencer because it provided an accessible way to generate complex, rhythmic sounds that "sound good" without requiring virtuoso performance skills. The project quickly became a puzzle of two halves: how to architect a stable system while squeezing a functional user interface into a very small, limited set of hardware components.
+
+## Technical Implementation
+
+Because I was out of town with only a few components, I had to find creative workarounds for the physical interface. Instead of a professional button matrix, I used <H>cardboard and aluminum foil</H> to create DIY capacitive touch pads for instrument selection. 
+
+To manage six synthesis tracks with only three potentiometers, I implemented a modal software architecture. By toggling an <H>Override Mode</H>, the hardware controls are re-mapped in real-time; the pots stop controlling individual tracks and instead perform "master sweeps" for tempo and volume across all six voices at once.
+
+<TechStack items={[
+  { label: "Microcontroller", val: "Teensy 4.0" },
+  { label: "Audio Engine", val: "Teensy Audio Library" },
+]} />
+
+The project utilizes an object-oriented structure where a base <H>Instrument Class</H> manages common attributes like pattern data and envelope proportions. The audio architecture relies on the <H>Teensy Audio Library</H> as a backbone for the audio engine, and the code acts as a controller that interfaces with a static graph of audio objects to modulate parameters like frequency and filter cutoff in real-time.
+
+## Key Outcomes
+
+<OutcomeList items={[
+  { title: "Functional First Project", desc: <>Successfully built a "sounding" instrument that produces <H>stable, multi-track audio</H>.</> },
+  { title: "Hardware Workarounds", desc: <>Used software logic and <H>DIY aluminum foil sensors</H> to bypass the need for expensive, pin-heavy hardware components.</> },
+  { title: "Optimized Modal UI", desc: <>Designed a <H>dual-layer interface</H> that allows for both granular track-by-track tweaking and global performance sweeps.</> },
+  { title: "Standalone DSP Engine", desc: <>Leveraged the Teensy Audio Library to run 6 concurrent synthesis engines, including <H>FM synthesis</H> and stereo reverb.</> }
+]} />
+
+## Challenges & Solutions
+
+<ChallengeCard  items={[
+    {
+      prob: "Extreme Hardware Limitations",
+      desc: "Having only three pots and three buttons made it impossible to provide a dedicated control for every instrument parameter.",
+      sol: <>Implemented a <H>modal 'Override' system</H> that re-maps the existing hardware to global parameters like Master Tempo and Volume.</>
+    },
+    {
+      prob: "Non-Existent Pattern Editor",
+      desc: "I didn't have enough physical inputs or a screen to build a real-time pattern editor for users to draw their own notes.",
+      sol: <>Accepted the limitation by <H>hardcoding sequences</H> directly into the C++ source code as MIDI note arrays, prioritizing high-quality audio output and interactability over complex on-device editing.</>
+    },
+    {
+      prob: "Input Instability",
+      desc: "Standard potentiometer readings were jittery, and standard digital reads for touch pads could lag the audio clock.",
+      sol: <>Developed a <H>SmoothPot</H> struct using Exponential Moving Average filtering and utilized the <H>FastTouch</H> library to poll sensors at a 30ms interval to ensure UI stability.</>
+    }
+]}
+/>
+
+## Future Work
+
+<FutureWork items={[
+  { title: "Modular Codebase", desc: <>Transitioning instrument classes into dedicated <H>header files</H> to improve the organization and readability of the source code.</> },
+  { title: "Hardware Expansion", desc: <>Upgrading to a <H>Teensy 4.1</H> to gain more I/O pins, and using analog muxes or button matricies to gain more UI while being efficient with pins.</> },
+  { title: "Visual Feedback", desc: <>Integrating an <H>OLED display</H> to provide a clear view of current patterns and parameter values while performing.</> }
+]} />
