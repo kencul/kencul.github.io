@@ -1,109 +1,83 @@
-# kenwebsite
+# Software and Music Portfolio
 
-I used a template from a website to start myself off with a basic template on the main page and a bit of css. (https://ziontutorial.com/how-to-create-a-modern-website-using-html-and-css-step-by-step-website-tutorial/)
+A modern, responsive portfolio website built with Next.js, featuring a dynamic project case study system and an integrated music showcase.
 
-I used this template to look up all the tags and css to try to grasp all the concepts.
+## Project Architecture
 
-I imported fonts from **google fonts api** in the css, works great
+This project is a Next.js application using the App Router. It utilizes MDX for content management and Zod for data integrity.
 
-Tried to make the works section of my nav bar have a **drop down**, couldn't get it to work, so commented out and left it for later
+### Directory Structure
 
-Added picture, playing around with border radius. I didn't like the hard edges, so looked up an implementation to create a **gradient**, which I fiddled with until the edges were much less obvious
+* **/content/projects/**: Contains `.mdx` files for individual project case studies.
+* **/src/app/**: Core routing and page components.
+    * **/projects/**: The software portfolio listing page.
+    * **/projects/[slug]/**: Dynamic route for individual project case studies.
+    * **/music/**: The music portfolio page.
 
-Added text to introduce myself quickly on main page, wanted the button to start playing my music. this made me want to create a **custom audio player**, which I will save for later after I finish more basic layout stuffs
+* **/src/components/**: Modular UI elements.
+    * **/ui/**: Low-level reusable components (Cards, Icons, Video players).
+    * **/projects/**: Page specific components.
 
-Added 7 new pages, total 8. I don't know if i'll have enough time to add everything, but I will work on the most important ones first
+* **/src/lib/**: Utility functions and data fetching logic (e.g., MDX parsing and Zod schemas).
 
-Tried to make the **nav bar sticky** quickly, but didn't work so I moved on (https://www.w3schools.com/howto/howto_js_navbar_sticky.asp)
+* **/src/data/**: Static JSON data files for music tracks and general skillsets.
 
-Started changing nav bar and realized it would be super tedius to copy paste changes everytime, so adding javascript to fetch nav.html for every page
+* **/public/**: Static assets including project thumbnails, PDFs, and audio files.
 
-Chrome doesn't allow access to local files, so this wasn't possible in my environment. It will be possible on a server or on the github website
+## Core Technologies
 
-Working on music page, simplifying it with including just 3 columns, and probably just 3 youtube videos
+* **Framework**: Next.js (App Router)
+* **Styling**: Tailwind CSS
+* **Content**: MDX (via `next-mdx-remote`)
+* **Validation**: Zod (Schema-based frontmatter validation)
+* **Icons**: Lucide-react and custom SVG components
 
-The youtube videos are showing up, but not scaling up to the flex box properly and getting a playback error
+## Key Systems
 
-The playback error was because I wasn't using the proper embed link. Getting the proper embed from youtube and fixing links solved the playback issue (https://stackoverflow.com/questions/32426401/embeded-youtube-video-error)
+### Music Showcase
 
-With the power of flex box, I found I can add as many iframe elements as I wish. I made the youtube video embed fill the entire width, and applied a aspect ratio in the css to make the videos look watchable.
+The music page utilizes a centralized JSON data structure (`src/data/music.json`) to manage track listings. It features a custom `TrackCard` component designed to handle audio previews and external streaming links.
 
-The elements are at different heights depending on the length of the text, but I can't figure out how to align the flex boxes according the the bottom of them.
+### Project Case Studies
 
-Solved alignment through <align-self: flex-end;>
+Projects are authored in MDX. The system uses a centralized library in `src/lib/mdx.js` to parse file system content. Data integrity is enforced via a Zod schema to ensure all projects have the required metadata (Title, Date, Demo Image) before rendering.
 
-Soundcloud embed works great, but blasts your ears, and there is no volume control on the embed UI. I tried importing the soundcloud widget api and setting the volume to 50%.
+### Responsive Filtering
 
-Importing the api works, but setting the volume didn't work, and i couldn't figure it out, so I commented it out for now
+The software portfolio includes a client-side filtering system. It extracts unique tags from the project metadata to allow users to sort projects by technology or category.
 
-I want to try to implement some Unity games I made for a different class
+## Development
 
-Requires accessing local files again, so only possible if i push to github or get a webhost, but I want to be able to test quickly so I will do this later again. Requires webgl (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL)
+### Prerequisites
 
-Added icons to social page that redirect to my profile in each social.
+* Node.js
+* npm
 
-trying to make it change color on hover, tried layering the original and hover version of the image, but i couldn't figure out layering the flex objects
+### Installation
 
-filter: hue-rotate didn't work, so i settled on a scaling effect on hover for the social media icons
+```bash
+npm install
 
-I decided to work on the about page next, as the home page looked great with a picture, so i wanted to include another picture
+```
 
-I wanted the picture to be on the right and the text on the left to be opposite of the home screen, but it was a little lazy with my implementation and I can't keep track of the flex boxes, so the image is skewed far to the left.
-
-BUT it looks ok, and the text looks nice, so I left it as is.
-
-Checking back at the home page, I won't have time to implement the music transport, so I am having the button to listen to my music on the home page redirect to the music page
-
-The picture in the about page doesn't seem to be getting the gradient like the one on the home page.
-
-But, I think it would be most impactful and cool to get my Unity game working in WebGL than any other feature atm, so I am going to work on that, which will require pushing to the github and checking the website there, which will severely reduce my efficiency
-
-My imports from google fonts dont work on the github pages, which makes the entire website unusable
-
-Fixed by removing https: from the url, as github pages doesn't like that
-This breaks my local version, so I can't preview changes without pushing now
-
-first attemp at the unity embed, the window is really short, and the unity logo shows up, but never finishes loading
-
-the github pages update extremely slow after pushing, so its very difficult to debug. I will push one more time, and hope it works in class!
-
-python -m http.server 8089
-http://127.0.0.1:8089/
-
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
+### Running Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Build and Deployment
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+The site is designed for static optimization.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Maintenance Guidelines
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Adding Projects**: Create a new `.mdx` file in `/content/projects/`. Ensure the frontmatter matches the schema defined in `src/lib/mdx.js`.
+2. **Updating Music**: Modify `src/data/music.json` to add new tracks or update existing streaming links.
+3. **UI Consistency**: Use the custom MDX components defined in `src/components/mdx-components.js` to maintain visual consistency across all case studies.

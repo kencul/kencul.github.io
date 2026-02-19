@@ -4,8 +4,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { GithubIcon, LinkIcon} from "@/components/ui/icons";
 import { FileText } from 'lucide-react';
 import Link from "next/link";
-import Card from "@/components/ui/card";
+// import Card from "@/components/ui/card";
 import LiteVideo from "@/components/ui/LiteVideo"
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -54,17 +55,15 @@ export default async function ProjectPage({ params }) {
   });
 
   return (
-    <article className="py-6">
+    <article className="py-6 max-w-4xl mx-auto px-4">
       <header className="mb-8 border-b-2 border-highlight pb-6">
 
-        {/* Title Bar */}
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">{meta.title}</h1>
         <h2 className="text-xl text-highlight italic font-light mb-2">{meta.subtitle}</h2>
         <time className="block text-sm text-gray-400 tracking-wider mb-2">
           {formattedDate}
         </time>
         
-        {/* Link Setup */}
         <div className="flex flex-wrap gap-4 mt-4">
           {meta.github && (
           <Link 
@@ -102,15 +101,10 @@ export default async function ProjectPage({ params }) {
         </div>
       </header>
       
-      {/* YT Video embed */}
       {meta.ytID &&(
-      // <Card className="w-full max-w-4xl mx-auto p-0 rounded-xl overflow-hidden mb-12 aspect-video">
-      //   <iframe title={`${meta.title} Video Demonstration`} className="w-full h-full" src={meta.videoEmbed} allowFullScreen />
-      // </Card>
       <LiteVideo className="max-w-4xl mb-12" id={meta.ytID} title={meta.title}/>
       )}
 
-      {/* Injecting the MDX Content */}
       <MDXRemote source={content} components={mdxComponents} />
       
     </article>

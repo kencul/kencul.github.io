@@ -5,9 +5,8 @@ import Link from "next/link";
 
 export const mdxComponents = {
   h2: (props) => <SectionHeading className="mt-12" {...props} />,
-  p: (props) => <p className="text-gray-100 leading-relaxed text-lg mb-6" {...props} />,
+  p: (props) => <p className="text-gray-100 leading-relaxed text-lg mb-6 max-w-3xl hyphens-auto mx-auto" {...props} />,
   
-  // Custom Components
   ProjectImage: ({ src, alt, caption, width }) => (
     <Card as="figure" className="my-8 w-fit mx-auto p-4">
         <div className="flex flex-col items-center">
@@ -57,7 +56,6 @@ export const mdxComponents = {
   <div className="grid gap-4 w-fit mx-auto my-6">
     {items.map((item, i) => (
       <Card key={i} className="flex items-start gap-6 py-6 ">
-        {/* automatic numbering based on index */}
         <span className="text-highlight text-2xl">
           {(i + 1).toString().padStart(2, '0')}
         </span>
@@ -126,26 +124,4 @@ export const mdxComponents = {
       {children}
     </code>
   ),
-  // ol: ({ children }) => (
-  //     <ol className="
-  //     list-decimal 
-  //     list-inside
-  //     marker:text-highlight 
-  //     marker:text-3xl 
-  //     marker:font-extrabold">
-  //     {children}
-  //   </ol>
-  // ),
-  // // Styles the <ul> tag
-  // ul: ({ children }) => (
-  //   <ul className="list-disc list-inside text-highlight-light">
-  //     {children}
-  //   </ul>
-  // ),
-  // // Styles the <li> tag
-  // li: ({ children }) => (
-  //   <li className="text-gray-100 leading-relaxed text-xl mb-4 ">
-  //     {children}
-  //   </li>
-  // ),
 };
