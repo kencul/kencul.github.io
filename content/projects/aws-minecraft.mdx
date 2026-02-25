@@ -1,0 +1,123 @@
+---
+
+title: "The Zero-Waste Cloud Minecraft Server" 
+subtitle: "Automating AWS Spot Instances for Cost Savings + User Friendly Discord Bot Interface" 
+description: "A serverless-controlled, cloud infrastructure that allows friends to trigger a 'cold start' of a high-performance Minecraft server via Discord slash commands, leveraging AWS Spot Fleets to drastically reduce hosting costs and automate server administration." 
+tech: "AWS, Python, Bash, Serverless" 
+tags: ["AWS"] 
+demo: "/projects/aws-minecraft/cloudcraft3D.webp"
+date: "2025-09-26"
+github: "https://github.com/kencul/awsminecraft" 
+---
+## Intro
+
+The challenge began with a classic <H>performance-vs-cost</H> trade-off. While studying abroad in Ireland, I needed a high-spec server to host a <H>heavy modded Minecraft pack</H> for friends across different timezones. Hosting locally was impossible due to <H>security risks</H> and the need for <H>24/7 uptime</H>. 
+
+My initial, "lazy" cloud setup, leaving a high-spec <H>On-Demand EC2 instance</H> running nearly 24/7, resulted in a single-month bill exceeding <H>$120</H>. This expensive experience highlighted the necessity of cost optimization and became the catalyst for building a <H>smarter, automated</H> system.
+
+## Overview
+The goal was to architect a production-grade system providing <H>"on-demand"</H> high-performance gaming with <H>near-zero idle costs</H>. I needed a solution where:
+
+<OutcomeList items={[
+{ title: "Persistent Data", desc: <>The game state must be persistent despite using <H>ephemeral hardware</H></> },
+{ title: "User Controlled Wake", desc: <>Friends must be able to <H>wake the server</H> without my attention or AWS Console access.</> },
+{ title: "Automatic Shutdown", desc: <>The infrastructure would <H>"self-terminate"</H> when idle to prevent runaway billing</> },
+]} />
+
+## Technical Implementation
+
+The architecture follows a <H>"Cattle, Not Pets"</H> philosophy. Instead of a single persistent instance, the server lives on an ephemeral **Spot Instance** that provides up to a <H>90% discount</H> compared to standard rates.
+
+<ProjectImage 
+  src="/projects/aws-minecraft/cloudcraft2D.webp" 
+  alt="AWS Structure" 
+  caption="AWS System Structure"
+  width="900"
+/>
+
+To manage state, I decoupled storage from compute using a standalone <H>Amazon EBS volume</H> tagged `server-files`. On every boot, a master <H>User Data Script</H> programmatically finds the volume, mounts the filesystem, associates a static Elastic IP, and fetches secrets from the <H>SSM Parameter Store</H>.
+
+<TechStack items={[
+  { label: "Compute", val: "EC2 Fleet + Spot (ARM)" },
+  { label: "Control", val: "Lambda + API Gateway" },
+  { label: "Interface", val: "Discord Slash Commands"}
+]} />
+
+The user interface is a <H>Serverless Discord Bot</H>. When a user triggers `/start`, a Lambda function verifies the request signature using `PyNaCl` and modifies the Spot Fleet’s target capacity from 0 to 1, initiating a "cold start" of the entire stack.
+
+<ProjectImage 
+  src="/projects/aws-minecraft/discordBot.webp" 
+  alt="Discord Bot Screenshot" 
+  caption="Discord Bot with '/status' command"
+  width="500"
+/>
+
+## Key Outcomes
+
+<OutcomeList items={[
+  { title: "95% Cost Savings", desc: <>Reduced monthly hosting fees from <H>$120+ to ~$6</H> for typical use patterns.</> },
+  { title: "Sub-Minute Boots", desc: <>Developed a <H>Custom AMI</H> with Java 21 and mcrcon pre-baked to ensure the server is playable almost immediately after a command.</> },
+  { title: "Self-Healing State", desc: <>Implemented an orchestration layer where the <H>World Data survives</H> instance termination and automatically re-attaches to fresh hardware.</> },
+  { title: "Secure Public Access", desc: <>Authorized non-technical users to manage <H>complex AWS infrastructure</H> safely through a familiar chat interface.</> }
+]} />
+
+## Challenges & Solutions
+
+<ChallengeCard  items={[
+{
+prob: "Ephemeral Compute Termination",
+desc: "Spot instances can be reclaimed by AWS with a 2-minute notice, which would normally delete all un-saved game progress.",
+sol: <>Configured a <H>systemd shutdown service</H> that triggers on instance termination, running an RCON 'save-all' and 'stop' command to flush data to the persistent EBS volume.</>
+},
+{
+prob: "Dynamic Fleet ID Management",
+desc: "Because Fleets are occasionally recreated, the Discord bot needed a way to know which Fleet ID to scale without updating the Lambda code manually.",
+sol: <>Integrated <H>SSM Parameter Store</H> as a dynamic configuration layer; the bot reads and writes the current 'active' Fleet ID to SSM to maintain a persistent link between the UI and the hardware.</>
+},
+{
+prob: "Resource-Heavy Library Packaging",
+desc: "Packaging the PyNaCl security library for Lambda is difficult because it requires C-extensions compiled for the specific Lambda Linux environment.",
+sol: <>Utilized <H>Docker-based builds</H> to compile the library, ensuring binary compatibility for the production environment.</>
+}
+]}
+/>
+
+## Cost Analysis: From "Always-On" to "Pay-as-you-Play"
+
+The primary driver of the original $120 bill was <H>idle time</H>: paying for high-spec compute while friends were asleep or at work. This new architecture shifts the majority of the cost from variable compute to a small set of predictable "flat fees."
+
+### The "Flat Fee"
+
+Even when no one is playing, the system incurs minor costs to maintain the server's identity and data:
+
+<TechStack items={[
+  { label: "Elastic IP (EIP)", val: "~$3.60/mo to reserve a consistent entry point." },
+  { label: "Amazon EBS", val: "~$0.80/mo to store the persistent world data" },
+  { label: "Total Maintenance", val: "~$4.40 / month"}
+]} />
+
+### Compute Efficiency
+For a standard `t4g.small` (ARM-based) instance, the Spot market price is roughly <H>$0.01 per hour</H>. This is an order of magnitude smaller than the flat fees, meaning a 6-hour session costs only about <H>$0.07</H> in compute.
+
+<Table 
+  headers={["Component", "Lazy System (24/7)", "This System (6hr Session)"]}
+  rows={[
+    ["Compute (EC2)", ">$120.00 /mo", "$0.07"],
+    ["Static IP (EIP)", "$3.60 /mo", "$3.60 /mo (idle)"],
+    ["Storage (EBS)", "$0.80 /mo", "$0.80"],
+    ["Total Monthly", ">$120", "~$4.40 + $0.01/hr"]
+  ]}
+/>
+
+### Scalability and Modpacks
+While this comparison uses a vanilla server as a baseline, the logic remains consistent for <H>high-performance modded servers</H>. Even if a heavy modpack requires a `t4g.large` or `m8g.large` (5-7x the cost), the <H>Spot Instance Pricing</H> and <H>Auto-Shutdown</H> engine ensure that I am still saving <H>70-95%</H> compared to a traditional "Always-On" cloud setup.
+
+At the time of writing, a `t4g.small` spot instance running 24/7 for a month costs $5.20, while a `m8g.large` would cost $19.30 in the <H>us-east-1</H> region. With cost savings from idle-time reductions in mind, the system is clearly a cost efficient upgrade over the lazy system.
+
+## Future Work
+
+<FutureWork items={[
+{ title: "Infrastructure as Code", desc: <>Migrating the manual console setup to <H>Terraform</H> to allow for one-click replication of the entire VPC and server stack.</> },
+{ title: "Automated S3 Backups", desc: <>Implementing a nightly cron job to snapshot the EBS volume and upload compressed world data to <H>Amazon S3</H> for disaster recovery.</> },
+{ title: "Admin UI", desc: <>Creating an intuitative UI to configure the server to easily modify server settings, EC2 instance types, and more.</> }
+]} />
