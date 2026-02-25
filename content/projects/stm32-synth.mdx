@@ -1,0 +1,116 @@
+---
+title: "STM32 Polyphonic Synth: Bare-Metal DSP" 
+subtitle: "8-Voice Polyphonic Wavetable Synthesizer on Cortex-M4" 
+description: "A high-performance C++ synthesis engine built from scratch for the STM32F407. Featuring zero-delay feedback filters, DMA-driven I2S audio, and custom USB MIDI implementation to bridge the gap between embedded hardware and professional music production." 
+tech: "C++, STM32 HAL, DSP, CMSIS, USB-MIDI" 
+tags: ["Embedded", "Audio"] 
+demo: "/projects/stm32-synth/thumbnail.webp"
+date: "2026-2-8"
+github: "https://github.com/kencul/STM32F4-AudioSynthesis" 
+ytID: "QuVIntSHrEU"
+---
+
+<TechStack 
+  items={[
+    { label: "Board", val: "STM32F407G Discovery" },
+    { label: "OLED", val: "SSD1306" },
+    { label: "PWM Driver", val: "PCA9685" },
+    { label: "Analog Mux", val: "TC74HC4052" }
+  ]} 
+/>
+
+## Overview
+
+Having learned the basics of audio development in embedded systems, I wanted to strip away the layers of abstraction and explore bare-metal programming. While the <H>Teensy</H> and <H>Daisy</H> ecosystems provide excellent platforms to get audio output quickly, their libraries hide much of the underlying hardware logic.
+
+To truly understand the fundamental structures needed for low-level DSP, I pivoted to <H>STM32 development</H>. I chose the <H>STM32F407G Discovery board</H>: a dev kit featuring an onboard DAC and line-out. My end goal was to create an 8-voice polyphonic wavetable synth, heavily inspired by hardware like the <H>Roland System 1m</H>. This required implementing professional-grade audio features, including zero-delay feedback filters and DMA-driven audio, all while managing the strict timing constraints of a 168MHz ARM Cortex-M4 processor.
+
+<ProjectImage 
+  src="/projects/stm32-synth/hardware_pic.webp" 
+  alt="STM32 Synth Hardware Setup" 
+  caption="STM32F407G Discovery board, SSD1306 OLED, and potentiometer bank with an analog multiplexer."
+  width={800}
+/>
+
+## The Architecture
+
+The system is built on a non-blocking pipeline that strictly separates hardware UI control from the synthesis engine. To ensure continuous, glitch-free audio, the DSP engine utilizes a <H>Circular Buffer</H> alongside DMA (Direct Memory Access).
+
+### Memory & Performance Optimization
+
+A major technical hurdle in bare-metal audio is avoiding bus contention between the CPU and the DMA controller. By placing the `VoiceManager` and the active synthesis objects into <H>CCMRAM (Core Coupled Memory)</H>, the CPU can execute complex floating-point math at maximum speed without having to wait for the main system bus.
+
+<Table 
+  headers={["Feature", "Implementation", "Benefit"]}
+  rows={[["Audio Transport", "DMA via I2S", "Zero CPU overhead for audio data transfer"],["Wavetable Synthesis", "CCMRAM", "Instant memory access for heavy float math"],["Control Rate", "Timer Interrupts", "Jitter-free ADC multiplexer scanning"],["UI Rendering", "I2C Fast Mode", "Smooth, non-blocking OLED visual updates"]
+  ]}
+/>
+
+<ChallengeCard 
+  items={[
+    {
+      prob: "USB MIDI Class Compliance",
+      desc: "Standard STM32 HAL libraries provide generic USB templates, but do not include a 'plug-and-play' MIDI class.",
+      sol: "Modified the USB Device Middlewares to implement custom MIDI descriptors, allowing the board to be instantly recognized as a standard MIDI controller by any DAW."
+    },
+    {
+      prob: "Filter Instability vs. CPU Load",
+      desc: "Initial experiments with a digital Moog Ladder filter simulation proved too computationally heavy for the MCU to run 8 voices simultaneously.",
+      sol: "Implemented a Zero-Delay Feedback (ZDF) State Variable Filter. By mathematically solving the algebraic loop at every sample, it achieves analog-style stability at high resonance while remaining computationally efficient."
+    }
+  ]}
+/>
+
+### The Synthesis Engine
+
+The core synthesis engine features two oscillator slots per voice, allowing for <H>Real-Time Wavetable Morphing</H>. By interpolating between two distinct wavetables based on ADC inputs, the user can create evolving, complex timbres that are then shaped by an ADSR envelope and routed through the ZDF filter.
+
+## Outcomes
+
+<OutcomeList 
+  items={[
+    {
+      title: "Hard Real-Time Performance",
+      desc: "Optimized the DMA circular buffer for hyper-low latency audio, ensuring the synth responds instantly to incoming USB MIDI without audio dropouts."
+    },
+    {
+      title: "Advanced Memory Optimization",
+      desc: "Leveraged the STM32's 64KB CCMRAM to host the DSP engine, allowing the Cortex-M4 to process complex math without fighting the DMA for memory access."
+    },
+    {
+      title: "Analog-Modeled Stability",
+      desc: "Successfully deployed Zero-Delay Feedback (ZDF) filters that remain mathematically stable and musical, even when pushed into extreme self-oscillation."
+    },
+    {
+      title: "Professional Voice Management",
+      desc: "Developed a robust 8-voice polyphony engine with 'Soft-Kill' logic, preventing audible clicks and DC offsets during rapid note stealing."
+    },
+    {
+      title: "Custom USB Class Compliance",
+      desc: "Rewrote low-level USB descriptors from scratch, turning a generic development board into a plug-and-play studio instrument."
+    }
+  ]}
+/>
+
+## Future Work
+
+<FutureWork 
+  items={[
+    {
+      title: "FM Cross-Modulation",
+      desc: "Implementing frequency modulation (FM) systhesis to generate harsher, industrial sonic textures."
+    },
+    {
+      title: "Expanded Hardware Controls",
+      desc: "Adding dedicated potentiometers and multiplexers for extended parameters, such as LFO rates, filter envelopes, and spatial effects (reverb/delay)."
+    },
+    {
+      title: "Custom PCB Design",
+      desc: "Transitioning the breadboarded multiplexer and potentiometer arrays into a custom-designed, unified PCB shield for the Discovery board."
+    },
+    {
+      title: "Custom User Wavetables",
+      desc: "Integrating USB Mass Storage Class (MSC) capabilities, allowing users to mount the synth as a drive and drag-and-drop their own wavetable files directly onto the board."
+    }
+  ]}
+/>
