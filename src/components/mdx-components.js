@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export const mdxComponents = {
   h2: (props) => <SectionHeading className="mt-12" {...props} />,
+  h3: (props) => <h3 className="text-gray-100 font-bold text-xl mt-8 mb-4" {...props} />,
   p: (props) => <p className="text-gray-100 leading-relaxed text-lg mb-6 max-w-3xl hyphens-auto mx-auto" {...props} />,
   
   ProjectImage: ({ src, alt, caption, width }) => (
@@ -132,5 +133,37 @@ export const mdxComponents = {
     ">
       {children}
     </code>
+  ),
+
+  Table: ({ headers = [], rows = [] }) => (
+    <Card className="my-8 p-0 overflow-hidden border border-white/10">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-white/5 border-b border-white/10">
+            <tr>
+              {headers.map((header, i) => (
+                <th 
+                  key={i} 
+                  className="px-6 py-4 text-highlight font-bold uppercase text-xs tracking-widest"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {rows.map((row, i) => (
+              <tr key={i} className="hover:bg-white/[0.02] transition-colors">
+                {row.map((cell, j) => (
+                  <td key={j} className="px-6 py-4 text-base text-gray-200 font-light">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
   ),
 };
