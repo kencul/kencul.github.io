@@ -1,9 +1,9 @@
 ---
 title: "STM32 Polyphonic Synth: Bare-Metal DSP" 
 subtitle: "8-Voice Polyphonic Wavetable Synthesizer on Cortex-M4" 
-description: "A high-performance C++ synthesis engine built from scratch for the STM32F407. Featuring zero-delay feedback filters, DMA-driven I2S audio, and custom USB MIDI implementation to bridge the gap between embedded hardware and professional music production." 
-tech: "C++, STM32 HAL, DSP, CMSIS, USB-MIDI" 
-tags: ["Embedded", "Audio"] 
+description: "Designed and built a real-time 8-voice polyphonic synthesizer from scratch on a Cortex-M4: full DSP signal chain within a hard 48 kHz interrupt budget. 8-voice polyphony runs at 26% CPU utilization, leaving 74% headroom, with no OS, no dynamic allocation on the audio path, and a custom USB MIDI class for plug-and-play DAW integration."
+tech: "C++, STM32 HAL, USB-MIDI, CMake, CTest"
+tags: ["Embedded", "Audio", "C++"] 
 demo: "/projects/stm32-synth/thumbnail.webp"
 date: "2026-2-8"
 github: "https://github.com/kencul/STM32F4-AudioSynthesis" 
@@ -13,104 +13,175 @@ ytID: "QuVIntSHrEU"
 <TechStack 
   items={[
     { label: "Board", val: "STM32F407G Discovery" },
-    { label: "OLED", val: "SSD1306" },
-    { label: "PWM Driver", val: "PCA9685" },
-    { label: "Analog Mux", val: "TC74HC4052" }
+    { label: "Language", val: "C11 / C++17" },
+    { label: "Frameworks", val: "STM32F4xx HAL, CMSIS 5, STM32 USB Device Library" },
+    { label: "Build", val: "CMake, CTest, GitHub Actions CI" },
+    { label: "Tools", val: "STM32CubeMX, ST-Link GDB, DWT cycle profiler" },
   ]} 
 />
 
 ## Overview
 
-Having learned the basics of audio development in embedded systems, I wanted to strip away the layers of abstraction and explore bare-metal programming. While the <H>Teensy</H> and <H>Daisy</H> ecosystems provide excellent platforms to get audio output quickly, their libraries hide much of the underlying hardware logic.
+I built a fully polyphonic synthesizer on bare hardware (no Linux, no RTOS, no audio framework) to understand the full stack from clock configuration to DSP algorithm. The <H>STM32F407G Discovery</H> was the target: an on-board <H>CS43L22 codec</H>, a <H>Cortex-M4 FPU</H>, and enough SRAM to be genuinely interesting without being trivially easy.
 
-To truly understand the fundamental structures needed for low-level DSP, I pivoted to <H>STM32 development</H>. I chose the <H>STM32F407G Discovery board</H>: a dev kit featuring an onboard DAC and line-out. My end goal was to create an 8-voice polyphonic wavetable synth, heavily inspired by hardware like the <H>Roland System 1m</H>. This required implementing professional-grade audio features, including zero-delay feedback filters and DMA-driven audio, all while managing the strict timing constraints of a 168MHz ARM Cortex-M4 processor.
+The result is a self-contained USB MIDI instrument built solo over 4 weeks: 8-voice polyphony, real-time wavetable morphing across 8 waveforms (sine, saw, square, Rhodes, clav, choir, acid, glass), a zero-delay feedback filter, hardware knobs, an OLED display, and per-voice LED metering.
 
 <ProjectImage 
   src="/projects/stm32-synth/hardware_pic.webp" 
   alt="STM32 Synth Hardware Setup" 
-  caption="STM32F407G Discovery board, SSD1306 OLED, and potentiometer bank with an analog multiplexer."
+  caption="STM32F407G Discovery board with SSD1306 OLED, potentiometer bank, and analog multiplexer."
   width={800}
 />
 
-## The Architecture
+## Constraints
 
-The system is built on a non-blocking pipeline that strictly separates hardware UI control from the synthesis engine. To ensure continuous, glitch-free audio, the DSP engine utilizes a <H>Circular Buffer</H> alongside DMA (Direct Memory Access).
-
-### Memory & Performance Optimization
-
-A major technical hurdle in bare-metal audio is avoiding bus contention between the CPU and the DMA controller. By placing the `VoiceManager` and the active synthesis objects into <H>CCMRAM (Core Coupled Memory)</H>, the CPU can execute complex floating-point math at maximum speed without having to wait for the main system bus.
+The system runs under hard real-time constraints with no safety net: no OS scheduler, no dynamic memory allocation on the audio path, and no tolerance for dropouts.
 
 <Table 
-  headers={["Feature", "Implementation", "Benefit"]}
-  rows={[["Audio Transport", "DMA via I2S", "Zero CPU overhead for audio data transfer"],["Wavetable Synthesis", "CCMRAM", "Instant memory access for heavy float math"],["Control Rate", "Timer Interrupts", "Jitter-free ADC multiplexer scanning"],["UI Rendering", "I2C Fast Mode", "Smooth, non-blocking OLED visual updates"]
+  headers={["Constraint", "Requirement"]}
+  rows={[
+    ["Sample rate", "48 kHz, interrupt-driven; no dropout tolerance"],
+    ["Audio bit depth", "16-bit signed int via I2S to CS43L22 DAC"],
+    ["CPU", "STM32F407VG @ 168 MHz, Cortex-M4 with FPV4-SP-D16 FPU"],
+    ["Memory", "No dynamic allocation on the audio path; VoiceManager placed in CCMRAM"],
+    ["Polyphony", "8 simultaneous voices, no audible artifacts on voice steal"],
+    ["Buffer / Latency", "128-sample stereo circular buffer; 64-sample halves filled inside one 1.333 ms interrupt window"],
+    ["Scheduling", "All timing is interrupt-driven; no OS"]
   ]}
 />
+
+## Architecture
+
+The system strictly separates hardware control from the synthesis engine. The audio path runs exclusively inside the <H>DMA half-transfer interrupt</H> and never touches I2C, UART, or any shared peripheral; this is the core guarantee that makes real-time stability possible.
+
+<ProjectImage
+  src="/projects/stm32-synth/architecture.png"
+  alt="Signal flow architecture: USB MIDI through DSP chain to DAC output"
+  caption="Audio data path: USB OTG through VoiceManager, SVF filter, DMA circular buffer, and I2S to the CS43L22 codec."
+  width={600}
+  invert
+/>
+
+To guarantee deterministic audio processing, I eliminated mutexes within the audio callback. Parameter updates leverage the ARM Cortex-M4 memory model to ensure <H>atomic float writes</H>. This maintains thread safety between the control loop and the audio ISR without introducing priority inversion or jitter. MIDI input is decoupled via a <H>lock-free circular buffer</H>, allowing the synthesis engine to operate in total isolation from the main loop.
+
+User hardware interaction is managed via a dedicated <H>TIM4 interrupt</H>, which drives ADC DMA scanning across eight potentiometers via a analog multiplexer. A GPIO interrupt handles button debouncing for waveform selection. To prevent bus contention, the OLED and LED drivers update over I2C at a lower priority, fully decoupled from the time-critical audio path.
+
+<H>CCMRAM placement</H> of `VoiceManager` eliminates bus contention with the DMA controller during the critical audio interrupt window.
+
+## Engineering Deep-Dive
 
 <ChallengeCard 
   items={[
     {
-      prob: "USB MIDI Class Compliance",
-      desc: "Standard STM32 HAL libraries provide generic USB templates, but do not include a 'plug-and-play' MIDI class.",
-      sol: "Modified the USB Device Middlewares to implement custom MIDI descriptors, allowing the board to be instantly recognized as a standard MIDI controller by any DAW."
+      prob: "Filter Selection Within the CPU Budget",
+      desc: <>The original target was a <H>Moog Ladder</H> filter. Profiling with <H>DWT-&gt;CYCCNT</H> revealed it costs <H>275 cycles/sample</H>, and that's already the aggressively reduced version: per-stage tanh saturation was replaced with a single tanh on the combined input+feedback signal. A faithful Huovilainen implementation (5 tanh calls per oversample iteration, ×4 for oversampling) would run around 4 times more expensive. Even the stripped-down version costs 838 µs per 8-voice block before oscillators or ADSR run.</>,
+      sol: <>Replaced it with a <H>Zero-Delay Feedback State Variable Filter (ZDF SVF)</H>. Solving the algebraic loop analytically per sample eliminates the unit-delay approximation of naive implementations and gives analog-accurate phase response at <H>82 cycles/sample</H>, a <H>3.35x reduction</H>. At 8 voices, filter cost drops to 251 µs (18.8% of budget), making full polyphony viable.</>
     },
     {
-      prob: "Filter Instability vs. CPU Load",
-      desc: "Initial experiments with a digital Moog Ladder filter simulation proved too computationally heavy for the MCU to run 8 voices simultaneously.",
-      sol: "Implemented a Zero-Delay Feedback (ZDF) State Variable Filter. By mathematically solving the algebraic loop at every sample, it achieves analog-style stability at high resonance while remaining computationally efficient."
+      prob: "Voice Stealing Without Audible Clicks",
+      desc: <>When all 8 voices are active, a new note must steal an existing one. A hard oscillator reset produces an immediate discontinuity in the audio signal, an audible click.</>,
+      sol: <>A two-stage soft-kill: <H>adsr.kill()</H> calculates a ramp that fades the stolen voice to silence over <H>240 samples (~5 ms at 48 kHz)</H>. The oscillator stores the incoming note in a pending struct and waits for the ramp to reach zero before executing noteOn. Voice allocation follows a deterministic <H>LRU</H> priority: idle → released → oldest active. Only the oldest-active path triggers the kill ramp.</>
+    },
+    {
+      prob: "Custom USB MIDI Class Compliance",
+      desc: <>The <H>STM32 HAL USB library</H> provides generic device templates but no MIDI class, so the board would appear as an unknown device to any DAW.</>,
+      sol: <>Modified the USB Device Middlewares to implement custom <H>MIDI descriptors</H> from scratch. The board now enumerates as a standard <H>class-compliant MIDI device</H> and is recognized plug-and-play by any DAW without drivers.</>
     }
   ]}
 />
 
-### The Synthesis Engine
+## Validation & Performance
 
-The core synthesis engine features two oscillator slots per voice, allowing for <H>Real-Time Wavetable Morphing</H>. By interpolating between two distinct wavetables based on ADC inputs, the user can create evolving, complex timbres that are then shaped by an ADSR envelope and routed through the ZDF filter.
+### CPU Profiling
 
-## Outcomes
+8-voice polyphony runs at <H>26% CPU utilization</H>, leaving 74% headroom in the 1.333 ms audio block window. Measured with DWT->CYCCNT reads before and after `VoiceManager::process()`.
 
-<OutcomeList 
-  items={[
-    {
-      title: "Hard Real-Time Performance",
-      desc: "Optimized the DMA circular buffer for hyper-low latency audio, ensuring the synth responds instantly to incoming USB MIDI without audio dropouts."
-    },
-    {
-      title: "Advanced Memory Optimization",
-      desc: "Leveraged the STM32's 64KB CCMRAM to host the DSP engine, allowing the Cortex-M4 to process complex math without fighting the DMA for memory access."
-    },
-    {
-      title: "Analog-Modeled Stability",
-      desc: "Successfully deployed Zero-Delay Feedback (ZDF) filters that remain mathematically stable and musical, even when pushed into extreme self-oscillation."
-    },
-    {
-      title: "Professional Voice Management",
-      desc: "Developed a robust 8-voice polyphony engine with 'Soft-Kill' logic, preventing audible clicks and DC offsets during rapid note stealing."
-    },
-    {
-      title: "Custom USB Class Compliance",
-      desc: "Rewrote low-level USB descriptors from scratch, turning a generic development board into a plug-and-play studio instrument."
-    }
+<Table 
+  headers={["Condition", "Time", "% of 1.333 ms window"]}
+  rows={[
+    ["Baseline overhead (0 voices)", "20 µs", "1.5%"],
+    ["8 voices, full polyphony", "347 µs", "26.0%"],
+    ["Per-voice cost", "~41 µs", "~3.1%"],
+    ["Headroom remaining", "986 µs", "74.0%"]
   ]}
 />
+
+### Filter Comparison
+
+The Moog Ladder was profiled against the ZDF SVF under identical conditions. At 8 voices, the Moog consumes <H>62.9%</H> of the entire audio block budget on filtering alone before a single oscillator or envelope runs. The SVF's <H>3.35× efficiency</H> advantage is what makes 8-voice polyphony viable on this hardware.
+
+<Table 
+  headers={["Filter", "Cycles/sample", "Cost at 8 voices", "% of budget"]}
+  rows={[
+    ["ZDF SVF (shipped)", "82", "~251 µs", "18.8%"],
+    ["Moog Ladder (rejected)", "275", "~838 µs", "62.9%"]
+  ]}
+/>
+
+### Algorithm Correctness
+
+A host-side <H>CTest</H> suite in `tests/` runs on any desktop compiler, no hardware required. It separates algorithm correctness from hardware bring-up and runs on every push via <H>GitHub Actions CI</H>.
+
+<Table 
+  headers={["Test", "Result"]}
+  rows={[
+    ["SVF −3 dB at cutoff", "Measured ratio 0.7071 vs. theoretical 0.70711, < 0.001% error"],
+    ["SVF self-oscillation stability", "Bounded over 10,000 samples at max resonance (k = 0.01)"],
+    ["Moog Ladder DC stability", "Converges without drift at resonance = 0"],
+    ["ADSR attack accuracy", "Reaches 1.0 within ±10% of configured attack time"],
+    ["ADSR kill ramp duration", "Reaches silence within 300 samples (contract: 240 = 5 ms @ 48 kHz)"],
+    ["ADSR release convergence", "Forced to exact 0.0 → IDLE, no asymptotic fade"]
+  ]}
+/>
+
+### Memory Utilization
+
+<Table 
+  headers={["Region", "Total", "Used", "Utilization"]}
+  rows={[
+    ["Flash", "1 MB", "212 KB", "20.7%"],
+    ["SRAM", "128 KB", "69 KB", "54.0%"],
+    ["CCMRAM", "64 KB", "34 KB", "52.6%"]
+  ]}
+/>
+
+Flash usage is dominated by wavetable data: 8 waveforms x 4096 samples x 4 bytes = 128 KB. CCMRAM is almost entirely the `VoiceManager`, a deliberate placement, not a forced one.
+
+## Reflection
+
+Real-time audio programming has a single governing rule: the audio callback is sacred. No allocations, no blocking calls, no peripheral access. Every architectural decision in this project (<H>CCMRAM placement</H>, <H>atomic float writes</H>, <H>the kill ramp</H>) exists to protect that invariant.
+
+The filter swap was the most instructive moment. Choosing the <H>Moog Ladder</H> based on "analog character" before measuring its CPU cost would have made 8-voice polyphony impossible. The limited speed of the MCU revealed how expensive the <H>Huovilainen model</H> is, and how much of a privilege it is to be able to use it in real-time. 
+
+If I rebuilt this today, I'd replace the implicit Cortex-M4 atomicity of float writes with an explicit <H>lock-free SPSC ring buffer</H> for parameter updates, more portable, easier to audit, and not dependent on knowing the architecture's memory guarantees.
 
 ## Future Work
 
 <FutureWork 
   items={[
     {
-      title: "FM Cross-Modulation",
-      desc: "Implementing frequency modulation (FM) systhesis to generate harsher, industrial sonic textures."
+      title: "Lock-Free Parameter Queue",
+      desc: "Replace implicit Cortex-M4 atomic float writes with an explicit SPSC ring buffer, more portable and easier to reason about under code review."
     },
     {
-      title: "Expanded Hardware Controls",
-      desc: "Adding dedicated potentiometers and multiplexers for extended parameters, such as LFO rates, filter envelopes, and spatial effects (reverb/delay)."
+      title: "Wavetable Anti-Aliasing",
+      desc: "Implement BLIT or MinBLEP to suppress harmonic aliasing at high pitches, a known limitation of the current phase accumulator approach."
     },
     {
-      title: "Custom PCB Design",
-      desc: "Transitioning the breadboarded multiplexer and potentiometer arrays into a custom-designed, unified PCB shield for the Discovery board."
+      title: "LFO Modulation Matrix",
+      desc: "Add LFO-to-filter and LFO-to-amplitude routing with a configurable mod matrix, enabling filter sweeps and tremolo without hardware changes."
     },
     {
-      title: "Custom User Wavetables",
-      desc: "Integrating USB Mass Storage Class (MSC) capabilities, allowing users to mount the synth as a drive and drag-and-drop their own wavetable files directly onto the board."
+      title: "CMSIS-DSP SIMD Optimization",
+      desc: "Port the ZDF SVF inner loop to CMSIS-DSP SIMD intrinsics for further CPU reduction, freeing headroom for additional voices or effects."
+    },
+    {
+      title: "Custom PCB Shield",
+      desc: "Consolidate the breadboarded multiplexer and potentiometer arrays into a unified PCB shield for the Discovery board."
+    },
+    {
+      title: "SysEx Patch Storage",
+      desc: "Add SysEx support for saving and recalling patches over MIDI, turning the synth into a fully programmable instrument."
     }
   ]}
 />

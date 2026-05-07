@@ -8,15 +8,16 @@ export const mdxComponents = {
   h3: (props) => <h3 className="text-gray-100 font-bold text-xl mt-8 mb-4" {...props} />,
   p: (props) => <p className="text-gray-100 leading-relaxed text-lg mb-6 max-w-3xl hyphens-auto mx-auto" {...props} />,
   
-  ProjectImage: ({ src, alt, caption, width }) => (
+  ProjectImage: ({ src, alt, caption, width, invert }) => (
     <Card as="figure" className="my-8 w-fit mx-auto p-4">
         <div className="flex flex-col items-center">
-            <Image 
-            src={src} 
-            alt={alt} 
-            width={width} 
+            <Image
+            src={src}
+            alt={alt}
+            width={width}
             height={500}
             className="h-auto"
+            style={invert ? { filter: 'invert(1)' } : undefined}
             />
             <figcaption className="text-center text-sm text-gray-300 mt-4 uppercase tracking-wide italic">
                 {caption}
@@ -26,13 +27,9 @@ export const mdxComponents = {
   ),
 
   TechStack: ({ items = [] }) => {
-    const count = items.length;
-    
+    const colMap = ['', 'grid-cols-1', 'grid-cols-2', 'grid-cols-3', 'grid-cols-4', 'grid-cols-5', 'grid-cols-6'];
     return (
-      <Card className={`grid gap-4 w-fit mx-auto my-8 
-        ${count <= 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'} 
-        ${count === 3 ? 'md:grid-cols-3' : ''}`}
-      >
+      <Card className={`grid gap-4 w-fit mx-auto my-8 ${colMap[Math.min(items.length, 6)]}`}>
         {items?.map((item, index) => (
           <div key={item.label || index} className="min-w-[120px]">
             <span className="text-highlight font-bold block uppercase mb-2 text-sm">
