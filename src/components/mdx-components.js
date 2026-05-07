@@ -29,22 +29,18 @@ export const mdxComponents = {
     </Card>
   ),
 
-  TechStack: ({ items = [] }) => {
-    const colMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5", "grid-cols-6"];
-    const smColMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-2", "grid-cols-2", "grid-cols-3", "grid-cols-3"];
-    return (
-      <Card className={`grid gap-4 w-fit max-w-full mx-auto my-8 ${smColMap[Math.min(items.length, 6)]} md:${colMap[Math.min(items.length, 6)]}`}>
-        {items?.map((item, index) => (
-          <div key={item.label || index} className="min-w-[120px]">
+  TechStack: ({ items = [] }) => (
+    <Card className="flex flex-wrap gap-4 w-fit max-w-full mx-auto my-8">
+      {items?.map((item, index) => (
+        <div key={item.label || index} className="min-w-[100px]">
             <span className="text-highlight font-bold block uppercase mb-2 text-sm">
               {item.label}
             </span>
             <span className="text-white text-base">{item.val}</span>
           </div>
         ))}
-      </Card>
-    );
-  },
+    </Card>
+  ),
 
   ChallengeCard: ({ items = [] }) => (
     <div className="grid gap-4 my-8">

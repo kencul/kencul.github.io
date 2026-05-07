@@ -31,7 +31,7 @@
     @apply antialiased;
   }
   html {
-    /* overflow-x: hidden; */
+    overflow-x: clip;
     scrollbar-gutter: stable;
   }
 }
