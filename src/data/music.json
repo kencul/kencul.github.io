@@ -3,7 +3,7 @@
         "id": "ruin",
         "title": "Ruin",
         "artist": "ken",
-        "description": "A track using sounds from the Csound Catalog, a CD-ROM made by Dr. Boulanger in 2000 containing pieces of audio made in the Csound language. These audio files were sampled, and simple tape effects were applied for the piece. This track was made for a class competition for Dr. Boulanger's electroacoustic composition class in my time at Berklee.",
+        "description": "Produced and mixed in 60 minutes; finalist for mix clarity and production quality. Ableton Live with a template-based workflow for speed, final balance on Pro Tools via Avid S6 for tactile signal processing.",
         "type": "audio",
         "source": "/audio/ruin.mp3",
         "featured": true
@@ -12,7 +12,7 @@
         "id": "mess",
         "title": "Mess I've Left Behind",
         "artist": "ken ft. KAFU",
-        "description": "A trap inspired electronic pop song using singing synthesizer, KAFU.",
+        "description": "Directed a live recording session for an 8-piece ensemble (6 violins, 1 cello, 1 banjo): coordinated mic placement, sheet music distribution, and talent communication. CeVIO AI (KAFU) integrated as lead vocal, mixed to blend organic and synthetic textures. Mixed by Riley Finkle.",
         "type":"audio",
         "source": "/audio/messLeftBehind.mp3"
     },
@@ -20,7 +20,7 @@
       "id": "candy",
       "title": "Taste of Candy",
       "artist": "ken ft. Hatsune Miku",
-      "description": "A farewell lovesong, my attempt at a bittersweet ballad.",
+      "description": "Ballad vocal synthesis via Hatsune Miku on Synthesizer V. Extensive manual tuning of phonemes, pitch curves, vibrato, dynamics, and brightness to eliminate robotic artifacts. iZotope RX9 for noise floor management within a dense arrangement.",
       "type": "youtube",
       "source": "https://www.youtube.com/embed/PO_y94pqrHY",
       "ytID": "PO_y94pqrHY"
@@ -29,7 +29,7 @@
       "id": "loona",
       "title": "LOONA - Flip That",
       "artist": "ken Remix",
-      "description": "A house/future bass remix of a K-pop song.",
+      "description": "A house/future bass remix of a K-pop song. RX9 for vocal isolation and Ableton Live for arrangement.",
       "type": "soundcloud",
       "source": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1316754085"
     },
@@ -37,7 +37,7 @@
         "id": "forget-me",
         "title": "Forget Me",
         "artist": "ken ft. Hatsune Miku",
-        "description": "My first track, featuring the vocaloid singer, Hatsune Miku.",
+        "description": "My first track using Synthesizer V to use Hatsune Miku. Includes heavy use of vocoding to create a rough but slim texture, as well as a violin solo.",
         "type": "youtube",
         "ytID": "jtR-VZRXP48"
     },
@@ -45,7 +45,7 @@
         "id": "out-of-love",
         "title": "Out of Love",
         "artist": "ken ft. Hatsune Miku",  
-        "description": "A revisit to Miku, learning the depths and details of vocaloid synthesis.",
+        "description": "A revisit to Miku, learning the depths and details of vocaloid synthesis. The primary focus was on 'tuning' in Synthesizer V, adjusting phonemes and pitch curves to stylize the performance.",
         "type": "youtube",
         "source": "https://www.youtube.com/embed/XRA3QPuZ6zw",
         "ytID": "XRA3QPuZ6zw"

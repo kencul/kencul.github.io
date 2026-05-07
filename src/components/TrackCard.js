@@ -4,13 +4,13 @@ import Card from "@/components/ui/card";
 import LiteVideo from "@/components/ui/LiteVideo";
 
 export default function TrackCard({ track }) {
-    const { title, artist, description, featured, type, source, ytID } = track;
+    const { id, title, artist, description, featured, type, source, ytID } = track;
 
     const styles = {
       card: `
         relative flex flex-col transition-all duration-150 shadow-xl rounded-xl
-        ${featured 
-          ? "lg:col-span-3 md:col-span-2 p-8 border-2 border-highlight/90 hover:scale-[1.005]" 
+        ${featured
+          ? "border-2 border-highlight/90"
           : "hover:border-highlight/50"}
       `,
       title: `font-bold text-white mb-1 ${featured ? "text-3xl md:text-4xl" : "text-2xl"}`,
@@ -20,7 +20,7 @@ export default function TrackCard({ track }) {
     };
   
     return (
-      <Card className={styles.card}>
+      <Card id={id} className={styles.card}>
         <h2 className={styles.title}>{title}</h2>
         <h3 className={styles.artist}>{artist}</h3>
         <p className={styles.description}>{description}</p>
