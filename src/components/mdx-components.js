@@ -7,16 +7,19 @@ export const mdxComponents = {
   h2: (props) => <SectionHeading className="mt-12" {...props} />,
   h3: (props) => <h3 className="text-gray-100 font-bold text-xl mt-8 mb-4" {...props} />,
   p: (props) => <p className="text-gray-100 leading-relaxed text-lg mb-6 max-w-3xl hyphens-auto mx-auto" {...props} />,
+  ul: (props) => <ul className="list-disc list-outside pl-6 space-y-2 mb-6 max-w-3xl mx-auto text-gray-100 text-lg" {...props} />,
+  ol: (props) => <ol className="list-decimal list-outside pl-6 space-y-2 mb-6 max-w-3xl mx-auto text-gray-100 text-lg" {...props} />,
+  li: (props) => <li className="leading-relaxed pl-1" {...props} />,
 
   ProjectImage: ({ src, alt, caption, width, invert }) => (
-    <Card as="figure" className="my-8 w-fit mx-auto p-4">
+    <Card as="figure" className="my-8 w-fit max-w-full mx-auto p-4">
       <div className="flex flex-col items-center">
         <Image
           src={src}
           alt={alt}
           width={width}
           height={500}
-          className="h-auto"
+          className="h-auto max-w-full"
           style={invert ? { filter: "invert(1)" } : undefined}
         />
         <figcaption className="text-center text-sm text-gray-300 mt-4 uppercase tracking-wide italic">
@@ -28,8 +31,9 @@ export const mdxComponents = {
 
   TechStack: ({ items = [] }) => {
     const colMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5", "grid-cols-6"];
+    const smColMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-2", "grid-cols-2", "grid-cols-3", "grid-cols-3"];
     return (
-      <Card className={`grid gap-4 w-fit mx-auto my-8 ${colMap[Math.min(items.length, 6)]}`}>
+      <Card className={`grid gap-4 w-fit max-w-full mx-auto my-8 ${smColMap[Math.min(items.length, 6)]} md:${colMap[Math.min(items.length, 6)]}`}>
         {items?.map((item, index) => (
           <div key={item.label || index} className="min-w-[120px]">
             <span className="text-highlight font-bold block uppercase mb-2 text-sm">
@@ -43,7 +47,7 @@ export const mdxComponents = {
   },
 
   ChallengeCard: ({ items = [] }) => (
-    <div className="grid gap-4">
+    <div className="grid gap-4 my-8">
       {items?.map((item, i) => (
         <Card key={i}>
           <h3 className="text-highlight font-bold mb-4 flex items-center gap-2 text-lg">
@@ -102,14 +106,14 @@ export const mdxComponents = {
   ),
 
   AudioPlayer: ({ src, label }) => (
-    <div className="my-6">
+    <Card className="p-4 my-6 max-w-sm mx-auto">
       {label && (
-        <p className="text-xs text-highlight font-bold uppercase tracking-widest mb-2">{label}</p>
+        <p className="text-xs text-highlight font-bold uppercase tracking-widest mb-3">{label}</p>
       )}
       <audio controls className="w-full rounded-lg hue-rotate-80 brightness-105 contrast-150">
         <source src={src} type="audio/mpeg" />
       </audio>
-    </div>
+    </Card>
   ),
 
   AudioGrid: ({ items = [] }) => (
@@ -140,11 +144,21 @@ export const mdxComponents = {
     <span className="text-highlight-light">{children}</span>
   ),
 
-  code: ({ children }) => (
-    <code className="relative rounded bg-[#2a2a2a] px-[0.3rem] py-[0.1rem] text-highlight-light border border-white/10">
-      {children}
-    </code>
+  pre: (props) => (
+    <pre className="bg-[#1a1a1a] rounded-lg border border-white/10 p-5 overflow-x-auto my-6 text-sm leading-relaxed max-w-3xl mx-auto" {...props} />
   ),
+
+  code: ({ className, children }) => {
+    // fenced code blocks get a language-* class from remark; inline code does not
+    if (className?.startsWith("language-")) {
+      return <code className={`${className} text-gray-200 font-mono`}>{children}</code>;
+    }
+    return (
+      <code className="relative rounded bg-[#2a2a2a] px-[0.3rem] py-[0.1rem] text-highlight-light border border-white/10">
+        {children}
+      </code>
+    );
+  },
 
   Table: ({ headers = [], rows = [] }) => (
     <Card className="my-8 p-0 overflow-hidden border border-white/10">
