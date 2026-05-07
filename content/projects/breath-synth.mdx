@@ -1,0 +1,220 @@
+---
+title: "Procedural Breath Synth: Vocal Realism via DSP"
+subtitle: "Bridging the Realism Gap in Virtual Vocalists via Csound & Additive Synthesis"
+description: "Built a procedural breath synthesis engine in Csound and Cabbage: spectral analysis of human breath samples drives six tunable resonant filters over white noise, with a dynamic filter envelope that mimics the natural brightness arc of inhalation. Packaged as a MIDI-triggered plugin with full formant, ADSR, and preset controls. Working at this level of acoustic detail builds the technical foundation for evaluating voice assets with precision that goes beyond what sample-based workflows can offer."
+tech: "Csound, Cabbage, Sonic Visualiser, Ableton Live"
+tags: ["Audio", "DSP", "Csound"]
+demo: "/projects/breath-synth/gui.webp"
+pdf: "/projects/breath-synth/Procedural Breath Sounds in Csound.pdf"
+github: "https://github.com/kencul/breathSynth"
+date: "2025-5-8"
+---
+
+<TechStack
+  items={[
+    { label: "Synthesis", val: "Csound" },
+    { label: "UI / Plugin", val: "Cabbage (VST/AU)" },
+    { label: "Analysis", val: "Sonic Visualiser" },
+    { label: "Prototyping", val: "Ableton Live 11, Vital, iZotope Neutron 3" },
+  ]}
+/>
+
+## Overview
+
+Synthetic vocals have a realism problem that pitch and timbre alone cannot fix: they never stop to breathe. Breath is a physical constraint of human biology, and it defines how singers phrase music across every genre. Without it, even the most accurate vocal synthesis sounds robotic.
+
+This project builds a procedural breath synthesis engine in <H>Csound</H> and <H>Cabbage</H> to close that gap. Rather than relying on static wave-file samples with limited variation, the engine uses <H>additive synthesis</H> driven by formant tables extracted from real breath recordings. The result is a fully parameterized, MIDI-triggered plugin that can generate a wide range of breath sounds from a single instrument.
+
+<AudioGrid items={[
+  { label: "Reference", src: "/projects/breath-synth/PantFemale_BW.16137.mp3" },
+  { label: "Synthesized", src: "/projects/breath-synth/QtOutput3.mp3" },
+]} />
+
+## The Problem with Existing Approaches
+
+Current vocal synthesis tools make attempts at breath sounds, but they fall short in two ways. Sample-based tools like Vocaloid ship with a fixed library of breath wave files: limited in variety and unnatural in context. AI voice models can produce breaths, but only when training data includes them, and coaxing a specific breath style out of a model requires carefully crafting the input vocal sample, a process that is tedious and unpredictable.
+
+The core issue is that both approaches treat breath as a static asset rather than a parameterized sound. A procedural engine changes that: any breath shape, from a gentle inhale to a sharp gasp, is reachable by adjusting formant frequencies, bandwidth, gain, and envelope timing.
+
+## Acoustic Analysis
+
+The first step was building a <H>formant table</H> from a real breath recording. Formants are the resonant frequency peaks shaped by the vocal tract; they appear as bright peaks on a spectrogram and are what distinguishes one vowel (or breath) from another.
+
+A 16-second heavy-breathing sample (*PantFemale_BW.16137.wav* by Blastwave FX) was imported into <H>Sonic Visualiser</H>. A single representative breath was isolated at its loudest, clearest moment, which minimized noise-induced error and guaranteed stable, readable peaks. The spectrogram revealed something immediately important: breath formants are more complex than vowel formants. Standard vowel synthesis needs three resonant frequencies; the breath sample showed four prominent peaks with additional ones visible on closer inspection.
+
+<ProjectImage
+  src="/projects/breath-synth/spectrogram.webp"
+  alt="Sonic Visualiser spectrogram of female breath reference sample"
+  caption="Sonic Visualiser spectrogram of PantFemale_BW.16137.wav. The bright orange peaks at 1.6, 3.1, 3.95, 5.35, 8.5, and 13.4 kHz are the six formants extracted for the synthesis table."
+  width={800}
+/>
+
+Six formants were extracted by hovering over each peak to read center frequency, bandwidth, and gain:
+
+<Table
+  headers={["Formant", "Center Freq (Hz)", "Bandwidth (Hz)", "Gain (dB)"]}
+  rows={[
+    ["f1", "1600", "200", "0"],
+    ["f2", "3100", "300", "−6"],
+    ["f3", "3950", "200", "−7"],
+    ["f4", "5350", "500", "−8"],
+    ["f5", "8525", "1000", "−6"],
+    ["f6", "13400", "150", "−15"],
+  ]}
+/>
+
+The wide spread from 1.6 kHz to 13.4 kHz, with substantial bandwidth at f5, is what gives breath its wispy, airy character. Vowels top out around 3.5 kHz; breath extends nearly four times higher.
+
+## Iterative Prototyping
+
+Before writing Csound, the DSP strategy was validated in <H>Ableton Live 11</H> with rapid iteration using graphical tools.
+
+<ChallengeCard
+  items={[
+    {
+      prob: "Graphical EQ: Hollow and Tinny",
+      desc: <>The first approach boosted the three loudest formant frequencies using a graphical EQ on white noise. The result was a thin, wind-like sound with no resemblance to breathing. Two parameters had been silently ignored: <H>bandwidth</H> (which sets Q-value and peak width) and <H>gain</H> per formant. All three frequencies were boosted to maximum, collapsing the relative amplitude relationships that give breath its texture.</>,
+      sol: <>Switched to parallel band-pass filters (Auto Filter in series), each tuned to a formant's center frequency with gain set to match the formant table. This produced a closer result, though still thin and wind-like. The structure was now correct; the parameters were not yet precise enough.</>
+    },
+    {
+      prob: "Static Spectrum: Missing the Arc",
+      desc: <>Scrubbing through the reference sample in Sonic Visualiser revealed something the static EQ could never replicate: the spectrum <H>changes over the course of a breath</H>. At the start of an inhale, high-frequency content is suppressed. As the breath grows louder, brightness increases. Near the end, it softens again. A single fixed EQ shape cannot capture this arc, which is why even a carefully sculpted static spectrum sounded dark and dead.</>,
+      sol: <>Used the Live vocoder as a proof of concept. A vocoder analyzes frequency bands in a source signal and uses those amplitudes to modulate a carrier. Patching the reference breath as modulator and white noise as carrier resynthesized the breath accurately, even at a bin count of four. This confirmed that breath synthesis is viable with a <H>dynamic spectrum</H> and at least four resonant frequencies.</>
+    },
+    {
+      prob: "Pink vs. White Noise",
+      desc: <>Pink noise distributes energy more evenly across octaves and was a candidate input oscillator because it inherently attenuates high frequencies, closer to the reference spectrum's shape. Testing it in Csound by swapping the <code>noise</code> opcode for <code>pinkish</code> revealed the opposite problem: excessive mid-frequency energy masked the high-end noise, producing a distorted, unpleasant result.</>,
+      sol: <><H>White noise</H> was selected and retained for the remainder of the project. Its flat spectrum meant the resonant filters and envelope had full control over the output shape, with no frequency-dependent bias from the source.</>
+    }
+  ]}
+/>
+
+The vocoder output -- resynthesized from white noise modulated by just four frequency bands -- was the proof that dynamic spectral filtering was enough:
+
+<AudioPlayer label="Vocoder proof of concept" src="/projects/breath-synth/LiveOutput5.mp3" />
+
+## DSP Architecture
+
+With the prototyping lessons applied, the synthesis engine was built in <H>Csound</H>, which allowed exact numerical control over every filter parameter directly from the formant table.
+
+The signal path is:
+
+1. White noise generator, amplitude-shaped by an ADSR envelope
+2. Six parallel <H>`reson`</H> opcodes, each tuned to one formant (center frequency + bandwidth)
+3. Filter outputs summed with per-formant gain scaling via `ampdb()`
+4. <H>Butterworth high-pass</H> at 110 Hz to remove sub-bass content inaudible on headphones
+5. <H>Butterworth low-pass</H> with a dynamic cutoff controlled by a filter envelope
+
+```csound
+; Amplitude envelope
+kamp linseg 0, p3/2, 0.8, p3/2, 0
+
+; White noise source
+asig noise kamp, 0
+
+; Resonance filters (one per formant)
+af1 reson asig, kcf1, kbw1, 1
+af2 reson asig, kcf2, kbw2, 1
+; ... repeated for f3-f6
+
+; Sum with gain scaling
+amix = af1 + af2*ampdb(ka2) + af3*ampdb(ka3) + af4*ampdb(ka4) \
+     + af5*ampdb(ka5) + af6*ampdb(ka6)
+
+; Subtractive refinement
+asig1 butterhp amix, 110
+asig2 butterlp asig1, 12000
+```
+
+The initial Csound output was already a convincing breath -- firm mid frequencies and wispy high-frequency noise, without the hollowness of the Ableton tests:
+
+<AudioPlayer label="First Csound pass" src="/projects/breath-synth/QtOutput1.mp3" />
+
+### The Filter Envelope
+
+The key insight from the prototyping phase was that brightness needs to move. The filter envelope replicates the perceptual arc of an inhale: starting closed, opening as the breath grows, and settling at full brightness:
+
+```csound
+; Dynamic filter envelope simulating natural inhalation progression
+kfilt linseg 3000, p3/0.5, 15000, p3, 15000
+amix  butterlp amix, kfilt
+```
+
+The cutoff sweeps from 3 kHz to 15 kHz over the first half of the note duration, then holds. Adjusting the envelope speed transforms the same formant table into a slow, gentle inhale or a sharp gasp. The extended version makes the brightness sweep easy to hear:
+
+<AudioPlayer label="Filter envelope applied" src="/projects/breath-synth/QtOutput4.mp3" />
+
+The spectrogram of the final output showed flat frequency curve, gradual high-frequency attenuation, and resonant peaks matching the reference in frequency and width. The shape of the synthesis aligned with the human breath across the full 0 Hz to 22 kHz range.
+
+## Cabbage GUI
+
+With the DSP layer stable, the instrument was ported into <H>Cabbage</H>, a framework for building VST/AU plugins on top of Csound. Cabbage added the GUI layer while keeping the full Csound instrument underneath.
+
+All synthesis parameters are exposed to the user:
+
+- **Amp Envelope:** Attack, Sustain, Release, Level
+- **Filter Envelope:** Attack, Release, Start Frequency, End Frequency
+- **Formants 1 through 6:** Frequency, Bandwidth, Gain (18 sliders total)
+- **Preset system:** Save, reload, and remove named configurations
+- **MIDI keyboard:** Trigger breath sounds from any key in real time
+
+<ProjectImage
+  src="/projects/breath-synth/gui.webp"
+  alt="Cabbage Breath Generator plugin with femaleBreath preset loaded"
+  caption="Breath Generator in Cabbage with the femaleBreath preset. All 18 formant sliders (Freq, BW, Gain per formant) and both envelope sections are exposed for real-time adjustment."
+  width={800}
+/>
+
+A dedicated always-on Csound instrument (instrument 2) continuously reads slider values via `chnget` and writes them to global variables, which the synthesis instrument reads on each note trigger. This decouples the UI polling from the audio engine cleanly.
+
+### Preset Scalability
+
+The preset system proved the engine's range. Starting from the femaleBreath formant table, tightening the amplitude and filter attack times produced a sharp gasp, saved as **femaleGasp**:
+
+<AudioPlayer label="Female gasp preset" src="/projects/breath-synth/generatedFemaleGasp.mp3" />
+
+For the male breath, a new reference sample was analyzed in Sonic Visualiser, the resonant frequencies were entered through the GUI, and slight envelope adjustments were made. The **maleBreath** preset was complete without touching the Csound code.
+
+## Evaluation
+
+The female breath output closely matched the reference sample in spectral shape, formant peak positions, and the natural brightness arc of inhalation. Human listening confirmed alignment with expectations for a realistic breath.
+
+The male breath is honest about where it falls short. A spectral analysis of the generated output revealed irregularly large spikes not present in the reference sample, which contributed to a harsher, noisier timbre. The likely cause is that the male breath required more iterative refinement of bandwidth values, which the quick GUI-only workflow did not fully explore. The female breath benefited from deeper early-stage analysis in CsoundQt; replicating that rigor for the male voice would close the gap.
+
+<AudioGrid items={[
+  { label: "Reference", src: "/projects/breath-synth/BreathHeavyMale_SFXB.1980.mp3" },
+  { label: "Synthesized", src: "/projects/breath-synth/generatedMaleBreath.mp3" },
+]} />
+
+## Reflection
+
+The filter envelope was the turning point in this project. Every failed Ableton attempt used a static spectrum. The vocoder experiment showed that a breath is not a shape, it is a motion. Once that was understood, the `linseg` envelope was not an optimization; it was the mechanism that made the synthesis work at all.
+
+The other lesson is that bandwidth matters as much as center frequency. The early EQ tests produced hollow results because Q-values were ignored. The `reson` opcode enforces bandwidth as a first-class parameter, which is part of why the Csound implementation succeeded where the DAW prototypes could not.
+
+## Future Work
+
+<FutureWork
+  items={[
+    {
+      title: "Male Breath Accuracy",
+      desc: "Refine the maleBreath preset through the same iterative spectral comparison used for the female breath. Tighter bandwidth tuning should eliminate the harsh spectral spikes observed in the current output."
+    },
+    {
+      title: "AI-Driven Breath Placement",
+      desc: "Integrate the engine into an AI vocal pipeline that analyzes lyric density and phrase length to automatically insert and size breath sounds, removing the need for manual placement."
+    },
+    {
+      title: "Extended Preset Library",
+      desc: "Analyze additional voice types and breath styles (whisper, exhalation, vocal fry transitions) to expand the preset library and demonstrate the engine's full range."
+    },
+    {
+      title: "Envelope Modulation",
+      desc: "Add LFO-to-envelope routing to allow subtle trembling or phased breath effects, useful for emotional or strained vocal performances."
+    },
+    {
+      title: "DAW Plugin Distribution",
+      desc: "Package the Cabbage instrument as a signed VST3/AU plugin for direct use in Ableton, Logic, and other hosts without requiring a Cabbage installation."
+    }
+  ]}
+/>
