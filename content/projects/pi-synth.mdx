@@ -1,0 +1,256 @@
+---
+title: "PiSynth: Polyphonic Physical Modeling Synthesizer for Embedded Linux"
+subtitle: "8-Voice Karplus-Strong Synthesizer on Raspberry Pi 5"
+description: "Engineered a standalone, 8-voice Karplus-Strong physical modeling synthesizer on Raspberry Pi 5. Features deterministic sub-11ms latency, a zero-blocking DSP thread, mathematical validation of pitch and filter responses, and a real-time browser interface over WebSockets."
+tech: "C++20, ALSA PCM, uWebSockets, PFFFT"
+tags: ["Embedded", "Audio", "C++", "Linux"]
+demo: "/projects/pi-synth/thumbnail.webp"
+date: "2026-05-18"
+github: "https://github.com/kencul/piSynth"
+---
+
+<TechStack
+  items={[
+    { label: "Board", val: "Raspberry Pi 5 4GB" },
+    { label: "Language", val: "C++20" },
+    { label: "Libraries", val: "ALSA PCM, uWebSockets, PFFFT" },
+  ]}
+/>
+
+## Overview
+
+<ProjectImage
+  src="/projects/pi-synth/demo.gif"
+  alt="PiSynth WebUI demo"
+  caption="Real-time browser UI over WebSockets reacting to MIDI input."
+  width={800}
+/>
+
+The design goal was a music appliance: plug in a USB audio interface and MIDI keyboard, power on, and the synth is ready to play from any browser on the local network with no terminal, no configuration, no logged-in user.
+
+The result is an <H>8-voice Karplus-Strong physical modeling synthesizer</H> on a <H>Raspberry Pi 5</H>, deployed as a <H>systemd service</H> with real-time thread scheduling achieved without running as root. Round-trip latency is deterministically held to <H>sub-11 ms</H>.
+
+## Architecture
+
+### The Appliance Constraint
+
+Every architectural decision in this project traces back to a single product constraint: building a headless music appliance on a general-purpose OS. The user must be able to plug in their hardware and play immediately, with no display, no terminal, and no configuration.
+
+<Table
+  headers={["Constraint", "Engineering Solution"]}
+  rows={[
+    ["No user session or terminal", "Deployed as a headless systemd service, relying on file capabilities to acquire rootless real-time scheduling on boot."],
+    ["Bring-your-own-hardware", "Runtime device discovery, auto-connecting MIDI, and adaptive formatting (float vs. TPDF dithered 16-bit)."],
+    ["No onboard display", "A uWebSockets server hosting a live browser UI, accessible from any device on the local network."],
+    ["Flawless audio playback", "A dedicated SCHED_FIFO audio thread isolated from the OS and UI via a lock-free ring buffer."]
+  ]}
+/>
+
+### Incremental Repository Structure (9 Chapters)
+
+The repository is structured as nine self-contained, buildable milestones:
+
+<Table
+  headers={["Chapter", "Milestone"]}
+  rows={[
+    ["1", "Raw ALSA PCM sine wave output"],
+    ["2", "USB MIDI input & note mapping"],
+    ["3", "Simple Synth: MIDI-to-audio bridge, basic voice engine"],
+    ["4", "Poly MIDI Synth: 8-voice polyphony, thread safety, lock-free ring buffer"],
+    ["5", "Pluck Synth: Karplus-Strong physical model, ADSR, parameter smoothing"],
+    ["6", "CC Control: full MIDI CC parameter mapping at runtime"],
+    ["7", "Effects Bus: ZDF SVF, Freeverb, chorus, ping-pong delay"],
+    ["8", "uWebSockets real-time browser UI & spectrum analyzer"],
+    ["9", "systemd deployment & Linux capabilities (headless, rootless)"]
+  ]}
+/>
+
+## Core Audio Architecture & OS Interaction
+
+### The Real-Time Mental Model
+
+The primary bottleneck in Embedded Linux audio is not DSP computation; it is the kernel scheduler. On a general-purpose OS, any thread can be preempted at any time, causing the audio callback to miss its deadline and produce a dropout.
+
+The solution is isolation: the audio loop runs on a <H>dedicated thread at `SCHED_FIFO` priority 80</H>. This places it above nearly all other system activity. The thread never blocks, never allocates, and never touches shared peripherals. All parameter changes arrive through a lock-free ring buffer.
+
+### Adaptive Output Formatting & TPDF Dithering
+
+Rather than routing through PulseAudio or JACK, the engine writes directly to the <H>ALSA PCM buffer</H>. At startup, it probes hardware capabilities and selects the best available format: <H>32-bit or 24-bit float</H> output is used natively when supported, avoiding any quantization step.
+
+For 16-bit fallback devices, <H>TPDF dithering</H> (triangular probability density function) is applied prior to truncation. TPDF adds triangular noise that decorrelates quantization error from the audio signal, trading harmonic distortion for a mathematically flat, benign noise floor.
+
+### Measured Round-Trip Latency
+
+Measured via physical hardware loopback and `arecord` (accounting for initialization offsets), the system achieves a consistent <H>~8–11 ms</H> round-trip latency.
+
+<Table
+  headers={["Stage", "Latency"]}
+  rows={[
+    ["MIDI poll wake", "~1 ms"],
+    ["ALSA output buffer (4 periods × 64 samples @ 48 kHz)", "5.33 ms (deterministic floor)"],
+    ["USB audio frame + DAC → cable → ADC", "~1–2 ms"],
+    ["Scheduler jitter & USB hub overhead", "~1–4 ms (uncontrollable OS/USB variance)"],
+    ["Total round-trip", "~8–11 ms"]
+  ]}
+/>
+
+The 5.33 ms ALSA buffer is an exact, hardware-dictated floor. The variance in total latency (8 vs. 11 ms) is entirely attributable to scheduler jitter and USB transfer timing, neither reducible in software without hardware changes.
+
+## DSP Implementation & CPU Profiling
+
+### Extended Karplus-Strong Engine
+
+The synthesis model goes beyond a basic feedback delay line in two key places:
+
+- **Pluck Position (Excitation shaping):** Initial string excitation uses a <H>variable-width triangle pulse</H> rather than a burst of white noise. The pulse width controls pluck position: a narrow pulse centered at the bridge excites more high-frequency partials; a wider pulse toward the middle produces a warmer, more fundamental-heavy attack. This directly models the physics of where a plectrum contacts a string.
+
+- **Pickup Position (Harmonic comb filter):** A waveguide-inspired <H>comb filter</H> is applied to the output, parameterized by a normalized position along the string. This mimics the behavior of a physical pickup: a pickup at a pressure node of a given harmonic will null that harmonic from the output. The result is a timbral character shift that tracks the harmonic series of each note.
+
+### Tuning-Compensated Feedback Gain
+
+Naive Karplus-Strong implementations use a fixed feedback gain just below 1.0. This causes decay time to vary with pitch: lower notes decay faster than higher ones because the delay line is longer, meaning the gain is applied fewer times per unit time at lower frequencies.
+
+The engine calculates a <H>frequency-aware feedback multiplier</H> that normalizes decay time across the full MIDI range, guaranteeing consistent sustain character regardless of which octave is played.
+
+### Voice ADSR Architecture
+
+<Table
+  headers={["Feature", "Detail"]}
+  rows={[
+    ["Attack & Release timing", "Sample-accurate; no scheduler-tick rounding"],
+    ["Kill ramp", "Dedicated fade-to-silence ramp for clean voice stealing"],
+    ["MIDI CC mapping", "All ADSR parameters addressable via MIDI CC at runtime"],
+    ["Gate behavior", "Note-off triggers release phase; voice holds until envelope floor"]
+  ]}
+/>
+
+### Parameter Smoothing
+
+Every continuously-variable parameter in the engine (filter cutoff, resonance, pluck position, pickup position, effect sends) runs through <H>one-pole IIR smoothing</H> on the audio thread. This eliminates zipper noise, the audible stepping artifact produced when parameter values jump discretely between audio blocks during live input or CC modulation.
+
+### Master Bus: ZDF SVF, Chorus, Delay, Reverb
+
+Mixed voices route through a <H>Zero-Delay Feedback (ZDF) state variable filter</H>. A naive SVF introduces a one-sample delay in the feedback path, which warps the frequency response at high cutoffs. The ZDF formulation uses a <H>trapezoidal integrator</H> to solve the feedback loop algebraically per sample, eliminating the unit delay entirely and preserving analog-accurate phase behavior up to Nyquist.
+
+The master bus also includes stereo chorus, ping-pong delay, and <H>Freeverb</H> reverb, all running after the SVF.
+
+### Real-Time Spectrum Analyzer
+
+The WebSocket-driven spectrum analyzer applies a <H>Blackman-Harris window</H> before the FFT. Blackman-Harris was specifically chosen for its <H>−92 dB sidelobe suppression</H>, the best sidelobe rejection of common windows at the cost of a wider main lobe. For a musical instrument visualizer, spectral leakage masking narrow peaks is the dominant concern, making this the correct tradeoff over a Hann or Hamming window.
+
+### CPU Utilization
+
+Measured at 48 kHz, 64-sample period on Raspberry Pi 5:
+
+<Table
+  headers={["Condition", "CPU Load (1 of 4 Cores)", "Notes"]}
+  rows={[
+    ["Idle (engine running, 0 voices)", "16.2%", "ALSA loop, WebSocket, MIDI poll overhead"],
+    ["8 voices, dry (no effects)", "23.9%", "+7.7% over idle"],
+    ["8 voices, all effects enabled", "23.9%", "Sub-1% incremental cost for master bus"]
+  ]}
+/>
+
+The profiling result is the key insight: the <H>waveguide feedback loop is the cost center</H> (+7.7% over idle). The entire master bus effects chain (SVF, chorus, delay, reverb) adds less than 1% on top of that. Optimization effort must be focused on polyphony and the delay line, not effects processing.
+
+## Concurrency & the Non-Blocking Audio Thread
+
+### The Challenge
+
+Three threads compete for the audio engine's parameter state: the high-priority <H>audio thread</H> (`SCHED_FIFO`), the <H>WebSocket UI thread</H>, and the <H>MIDI polling thread</H>. The audio thread cannot take locks. Calling `pthread_mutex_lock` can block the thread, and a blocked audio thread guarantees dropped frames.
+
+### Multi-Core ARM Memory Semantics
+
+The solution is a lock-free SPSC (Single-Producer/Single-Consumer) ring buffer using `std::atomic`. On a single-core microcontroller, using default sequential consistency (`seq_cst`) is a safe, albeit conservative, approach. However, scaling up to the Raspberry Pi 5's multi-core SMP (Symmetric Multiprocessing) architecture introduces the strict reality of ARM's <H>weak memory model</H>. Across multiple cores, the processor and compiler are free to reorder loads and stores. A producer writing data to a shared buffer and updating an index does not guarantee the consumer will see the data write before the index update unless memory barriers are precisely defined.
+
+### The Solution: Explicit Release/Acquire Semantics
+
+To enforce correctness without the unnecessary overhead of default `seq_cst` barriers, the ring buffer implements explicit C++ atomics with tailored acquire/release semantics:
+
+```cpp
+// Producer (WebSocket / MIDI thread)
+bool push(const T &item) {
+    size_t write = write_pos.load(std::memory_order_relaxed);
+    size_t next  = (write + 1) % CAPACITY;
+
+    if (next == read_pos.load(std::memory_order_acquire)) return false; // full
+
+    data[write] = item;
+
+    // publish the write: must happen after data is written
+    write_pos.store(next, std::memory_order_release);
+    return true;
+}
+
+// Consumer (audio thread)
+std::optional<T> pop() {
+    size_t read = read_pos.load(std::memory_order_relaxed);
+
+    if (read == write_pos.load(std::memory_order_acquire)) return std::nullopt; // empty
+
+    T item = data[read];
+
+    // publish the read: must happen after data is copied
+    read_pos.store((read + 1) % CAPACITY, std::memory_order_release);
+    return item;
+}
+```
+
+Three ordering decisions work together here. First, each side loads its own index with <H>`relaxed`</H>, safe because in a SPSC queue only one thread ever writes each index, so there is no cross-thread race on that load. Second, the core happens-before pair: `write_pos.store(release)` in `push` guarantees the data write is visible to any thread that subsequently sees that store via `write_pos.load(acquire)` in `pop`. Third, the relationship is symmetric: `read_pos.store(release)` in `pop` publishes the consumer's progress back to the producer, ensuring the full-check in `push` sees an up-to-date slot count before reclaiming capacity. This is the minimal correct set of barriers for SPSC on multi-core ARM, validated by stress-testing under high thread contention directly on the Pi 5 hardware.
+
+## Testing & Validation
+
+<ChallengeCard
+  items={[
+    {
+      prob: "Filter Response Correctness",
+      desc: <>Validating that the ZDF SVF and any biquad stages behave mathematically correctly</>,
+      sol: <>Automated tests assert <H>at least −36 dB of rejection</H> one decade above the cutoff frequency, confirming rolloff characteristics consistent with the expected −40 dB/decade slope without over-constraining implementation variance.</>
+    },
+    {
+      prob: "ADSR Timing Accuracy",
+      desc: <>Envelope timing errors accumulate across voices, causing inconsistent dynamics that are audible but difficult to attribute to a specific bug.</>,
+      sol: <>Tests assert exact sample counts for each ADSR stage transition and verify release convergence to <H>exact zero</H>, not asymptotic fade. No scheduler-tick rounding is tolerated.</>
+    },
+    {
+      prob: "Parameter Smoothing Convergence",
+      desc: <>One-pole IIR smoothers must converge predictably. An incorrect time constant means either audible zipper noise (too slow) or sluggish parameter response (too fast).</>,
+      sol: <>Tests confirm <H>63% convergence after exactly one time constant</H> (the mathematical definition of a first-order system) and predictable tail termination, validating the coefficient calculation directly.</>
+    },
+    {
+      prob: "Pitch Detection Accuracy",
+      desc: <>Autocorrelation-based pitch detection operates in discrete frequency space. Peak-picking on integer lag indices introduces a systematic bias that causes detected pitch to deviate from true pitch.</>,
+      sol: <>Applied <H>parabolic interpolation</H> to the autocorrelation peak, fitting a parabola to the peak and its neighbors to find the sub-sample true maximum. Tests confirm pitch accuracy to <H>±2 cents</H> across the MIDI note range.</>
+    },
+    {
+      prob: "ARM Memory Model Validation",
+      desc: <>The lock-free ring buffer's correctness under the ARM weak memory model cannot be proven by analysis on x86 hardware or by reading the C++ standard alone.</>,
+      sol: <>The ring buffer was subjected to concurrent <H>stress-tests executed directly on the Raspberry Pi 5</H> under high thread contention, validating that no data races or torn reads occur on the target architecture under real scheduler conditions.</>
+    }
+  ]}
+/>
+
+## Reflection
+
+This project is a direct evolution of my previous bare-metal STM32 synthesizer, and the appliance constraint is what drove every decision that differs between them. The non-blocking audio loop, the `SCHED_FIFO` isolation, and the WebSocket UI all exist so the user can plug in and play without ever touching a terminal, while protecting the audio thread from kernel preemption.
+
+The progression of the audio engine's concurrency model was particularly clarifying. In the STM32 project, I implemented the lock-free buffer using `std::atomic` with default sequential consistency, a conservative and safe choice given the single-core Cortex-M4 target. Porting to the quad-core SMP architecture of the Pi 5 raised the stakes: what was safe-by-default on a microcontroller became a strict correctness requirement on multi-core ARM. Refining the memory ordering to use explicit `acquire/release` semantics was the direct follow-through on the gap I identified in the STM32 project. Profiling the engine revealed that the mathematically dense SVF and master effects bus cost less than 1% of CPU overhead, proving that in physical modeling, the waveguide feedback loop is the true computational bottleneck.
+
+## Future Work
+
+<FutureWork
+  items={[
+    {
+      title: "NEON SIMD Vectorization",
+      desc: "The delay-line reads and writes across 8 voices are embarrassingly parallel. ARM NEON intrinsics could process multiple voices in lockstep, theoretically doubling polyphony within the same CPU budget."
+    },
+    {
+      title: "I2S Audio Output",
+      desc: "Replacing the USB audio interface with an I2S DAC (e.g., HiFiBerry DAC+) would eliminate USB transfer jitter entirely, pushing round-trip latency below 3 ms, shattering the current floor set by USB overhead."
+    },
+    {
+      title: "MPE (MIDI Polyphonic Expression)",
+      desc: "MPE would enable per-note continuous control data (pressure, slide) to dynamically modulate pluck position, pickup position, and pitch bend on individual strings simultaneously, making the physical model fully expressive."
+    }
+  ]}
+/>
