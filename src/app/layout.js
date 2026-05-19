@@ -81,7 +81,7 @@ export default function RootLayout({ children }) {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col container mx-auto px-4">
+        <main className="flex-1 flex flex-col container mx-auto px-4 min-w-0">
           {children}
         </main>
 

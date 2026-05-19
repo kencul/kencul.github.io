@@ -32,7 +32,7 @@ export const mdxComponents = {
   TechStack: ({ items = [] }) => (
     <Card className="flex flex-wrap gap-4 w-fit max-w-full mx-auto my-8">
       {items?.map((item, index) => (
-        <div key={item.label || index} className="min-w-[100px]">
+        <div key={item.label || index} className="min-w-[100px] max-w-full">
             <span className="text-highlight font-bold block uppercase mb-2 text-sm">
               {item.label}
             </span>
@@ -63,10 +63,10 @@ export const mdxComponents = {
     <div className="grid gap-4 w-fit max-w-full mx-auto my-6">
       {items?.map((item, i) => (
         <Card key={i} className="flex items-start gap-6 py-6">
-          <span className="text-highlight text-2xl">
+          <span className="text-highlight text-2xl shrink-0">
             {(i + 1).toString().padStart(2, "0")}
           </span>
-          <div>
+          <div className="min-w-0">
             <h4 className="text-highlight-light font-bold text-lg mb-1">
               {item.title}
             </h4>

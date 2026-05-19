@@ -55,7 +55,7 @@ export default async function ProjectPage({ params }) {
   });
 
   return (
-    <article className="py-6 max-w-4xl mx-auto px-4">
+    <article className="py-6 max-w-4xl mx-auto px-4 min-w-0 w-full">
       <header className="mb-8 border-b-2 border-highlight pb-6">
 
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">{meta.title}</h1>
