@@ -29,22 +29,18 @@ export const mdxComponents = {
     </Card>
   ),
 
-  TechStack: ({ items = [] }) => {
-    const colMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5", "grid-cols-6"];
-    const smColMap = ["", "grid-cols-1", "grid-cols-2", "grid-cols-2", "grid-cols-2", "grid-cols-3", "grid-cols-3"];
-    return (
-      <Card className={`grid gap-4 w-fit max-w-full mx-auto my-8 ${smColMap[Math.min(items.length, 6)]} md:${colMap[Math.min(items.length, 6)]}`}>
-        {items?.map((item, index) => (
-          <div key={item.label || index} className="min-w-[120px]">
+  TechStack: ({ items = [] }) => (
+    <Card className="flex flex-wrap gap-4 w-fit max-w-full mx-auto my-8">
+      {items?.map((item, index) => (
+        <div key={item.label || index} className="min-w-[100px] max-w-full">
             <span className="text-highlight font-bold block uppercase mb-2 text-sm">
               {item.label}
             </span>
             <span className="text-white text-base">{item.val}</span>
           </div>
         ))}
-      </Card>
-    );
-  },
+    </Card>
+  ),
 
   ChallengeCard: ({ items = [] }) => (
     <div className="grid gap-4 my-8">
@@ -64,13 +60,13 @@ export const mdxComponents = {
   ),
 
   OutcomeList: ({ items = [] }) => (
-    <div className="grid gap-4 w-fit mx-auto my-6">
+    <div className="grid gap-4 w-fit max-w-full mx-auto my-6">
       {items?.map((item, i) => (
         <Card key={i} className="flex items-start gap-6 py-6">
-          <span className="text-highlight text-2xl">
+          <span className="text-highlight text-2xl shrink-0">
             {(i + 1).toString().padStart(2, "0")}
           </span>
-          <div>
+          <div className="min-w-0">
             <h4 className="text-highlight-light font-bold text-lg mb-1">
               {item.title}
             </h4>

@@ -45,7 +45,7 @@ A significant challenge was the disparity between Unity's `Update()` (input poll
 <OutcomeList items={[
   { title: "Update()", desc: <>Continuously polls <code>Input.mouseScrollDelta</code> and <code>UnityInput</code></> },
   { title: "Flagging", desc: <>If a valid input is detected, a <code>_keyPressedThisFrame</code> flag is raised</> },
-  { title: "FixedUpdate()", desc: <>The hook intercepts <code>PlayerCharacterMasterController</code>, checks the flag, and manually sets <code>sprintInputPressReceived = true</code></> }
+  { title: "FixedUpdate()", desc: <>The hook intercepts <code>PlayerCharacter MasterController</code>, checks the flag, and manually sets <code>sprintInputPressReceived = true</code></> }
 ]} />
 
 The mod leverages the `Risk of Options API` as a <H>soft dependency</H> to expose configuration handles directly within the in-game settings. By implementing this provider, users can adjust mod options in real-time. This bypasses the friction of manual `.cfg` file editing and game restarts, providing a seamless <H>live-configuration</H> experience.
