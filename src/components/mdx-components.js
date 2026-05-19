@@ -60,7 +60,7 @@ export const mdxComponents = {
   ),
 
   OutcomeList: ({ items = [] }) => (
-    <div className="grid gap-4 w-fit mx-auto my-6">
+    <div className="grid gap-4 w-fit max-w-full mx-auto my-6">
       {items?.map((item, i) => (
         <Card key={i} className="flex items-start gap-6 py-6">
           <span className="text-highlight text-2xl">
