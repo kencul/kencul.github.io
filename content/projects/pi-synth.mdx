@@ -7,6 +7,7 @@ tags: ["Embedded", "Audio", "C++", "Linux"]
 demo: "/projects/pi-synth/thumbnail.webp"
 date: "2026-05-18"
 github: "https://github.com/kencul/piSynth"
+ytID: "EE023OFZND8"
 ---
 
 <TechStack
@@ -20,9 +21,9 @@ github: "https://github.com/kencul/piSynth"
 ## Overview
 
 <ProjectImage
-  src="/projects/pi-synth/demo.gif"
-  alt="PiSynth WebUI demo"
-  caption="Real-time browser UI over WebSockets reacting to MIDI input."
+  src="/projects/pi-synth/piHardwarePic.webp"
+  alt="PiSynth hardware setup"
+  caption="Raspberry Pi 5 with USB-C power (top), USB MIDI to keyboard controller (top left), and an Apple USB-C to 3.5mm DAC via USB-C to USB-A adapter connected to the audio interface input (bottom left)."
   width={800}
 />
 
@@ -137,6 +138,13 @@ The master bus also includes stereo chorus, ping-pong delay, and <H>Freeverb</H>
 ### Real-Time Spectrum Analyzer
 
 The WebSocket-driven spectrum analyzer applies a <H>Blackman-Harris window</H> before the FFT. Blackman-Harris was specifically chosen for its <H>−92 dB sidelobe suppression</H>, the best sidelobe rejection of common windows at the cost of a wider main lobe. For a musical instrument visualizer, spectral leakage masking narrow peaks is the dominant concern, making this the correct tradeoff over a Hann or Hamming window.
+
+<ProjectImage
+  src="/projects/pi-synth/demo.gif"
+  alt="PiSynth WebUI showing waveguide visualizer, spectrum analyzer, and RMS meter"
+  caption="Browser UI updating in real time over WebSockets: waveguide visualizer, Blackman-Harris spectrum, and RMS meter."
+  width={800}
+/>
 
 ### CPU Utilization
 
